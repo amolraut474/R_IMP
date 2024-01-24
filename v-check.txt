@@ -1,0 +1,77 @@
+REF_Site:-https://epiktheme.netlify.app/html/preminum/demo/
+https://codepen.io/Ajeet_Kumar/pen/GRGYGLp
+(2)https://bestwebcreator.com/shopwise/demo/index-3.html
+How to check v command
+1:-Node -v
+2:-NPM -v
+
+React:-
+
+There are two folder main
+
+1:-Public
+2:-src:-two important thigs
+         
+        1:-Index.js:-Entry point
+        2:-app.js :-compounds
+
+
+********************** React app creation*****************************
+       command:-npx create-react-app my-test
+       App run:-(1)cd my-test (2)npm start
+       Playground folder:-src
+      1. Entrypoint:-index.jsRed Bridge Law [email]
+
+
+
+
+
+
+
+
+
+
+
+
+
+App.js
+import Home from "./Pages/Home";
+import About from "./Pages/About";
+import { Routes, Route } from "react-router-dom";
+function App() {
+    return <>
+    <a href="/">Home</a>
+    <a href="/About">About</a>
+       <Routes> 
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About/>} />
+        </Routes>
+    </>
+}
+export default App;
+
+
+
+
+
+
+
+
+Index.js
+import ReactDom, { render } from 'react-dom';
+import App from './app';
+import React from 'react';
+import { createRoot } from "react-dom/client";
+import { BrowserRouter as Routes, Route } from 'react-router-dom';
+// import {BrowserRouter} from 'react-router-dom';
+
+
+const root = createRoot(document.getElementById("root"));
+
+root.render(
+  <Routes>
+    <App/>
+  </Routes>
+);
+
+    
