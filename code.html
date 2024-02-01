@@ -1,1 +1,118 @@
 
+// ProductList.js
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const ProductList = ({ products }) => {
+  return (
+    <div>
+      <h2>Product List</h2>
+      {products.map(product => (
+        <div key={product.id}>
+          <Link to={`/product/${product.id}`}>
+            <h3>{product.name}</h3>
+          </Link>
+        </div>
+      ))}
+    </div>
+  );
+}
+export default ProductList;
+
+
+// ProductDetails.js
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+const ProductDetails = ({ products, addToCart }) => {
+  const { productId } = useParams();
+  const product = products.find(p => p.id === parseInt(productId));
+
+  const [quantity, setQuantity] = useState(1);
+
+  const increaseQuantity = () => {
+    setQuantity(prevQuantity => prevQuantity + 1);
+  };
+
+  const decreaseQuantity = () => {
+    setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  };
+
+  return (
+    <div>
+      <h2>Product Details</h2>
+      {product && (
+        <div>
+          <h3>{product.name}</h3>
+          <div>
+            <button onClick={decreaseQuantity}>-</button>
+            <span>{quantity}</span>
+            <button onClick={increaseQuantity}>+</button>
+          </div>
+          <button onClick={() => addToCart(product.id, product.name, quantity)}>Add to Cart</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ProductDetails;
+// Cart.js
+import React from 'react';
+
+const Cart = ({ cartItems }) => {
+  return (
+    <div>
+      <h2>Shopping Cart</h2>
+      <ul>
+        {cartItems.map(item => (
+          <li key={item.id}>
+            {item.name} - Quantity: {item.quantity}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Cart;
+
+// App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import ProductList from './ProductList';
+import ProductDetails from './ProductDetails';
+import Cart from './Cart';
+
+const App = () => {
+  const [cartItems, setCartItems] = useState([]);
+  const products = [
+    { id: 1, name: 'Product 1' },
+    { id: 2, name: 'Product 2' },
+    // Add more dummy data as needed
+  ];
+
+  const addToCart = (productId, productName, quantity) => {
+    const newItem = { id: productId, name: productName, quantity };
+    setCartItems([...cartItems, newItem]);
+  };
+
+  return (
+    <Router>
+      <Switch>
+        <Route path="/" exact>
+          <ProductList products={products} />
+        </Route>
+        <Route path="/product/:productId">
+          <ProductDetails products={products} addToCart={addToCart} />
+        </Route>
+      </Switch>
+      <Cart cartItems={cartItems} />
+    </Router>
+  );
+};
+
+export default App;
+
+
+
