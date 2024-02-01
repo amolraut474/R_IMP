@@ -1,65 +1,82 @@
+// App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ProductList from './ProductList';
+import ProductDetails from './ProductDetails';
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<ProductList />} />
+        <Route path="/product/:productId" element={<ProductDetails />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
+
+          // ProductList.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ProductList = () => {
   const products = [
-    { id: 1, name: 'Product 1' },
-    { id: 2, name: 'Product 2' },
-    // Add more products as needed
+    { id: 1, name: 'Product 1', price: 20.99 },
+    { id: 2, name: 'Product 2', price: 15.49 },
+    // Add more dummy data as needed
   ];
 
   return (
     <div>
-      <h1>Product List</h1>
-      <ul>
-        {products.map(product => (
-          <li key={product.id}>
-            <Link to={`/product/${product.id}`}>{product.name}</Link>
-          </li>
-        ))}
-      </ul>
+      <h2>Product List</h2>
+      {products.map(product => (
+        <div key={product.id}>
+          <Link to={`/product/${product.id}`}>
+            <h3>{product.name}</h3>
+          </Link>
+        </div>
+      ))}
     </div>
   );
 };
 
 export default ProductList;
 
-import React, { useState } from 'react';
 
-const SingleProduct = ({ match }) => {
-  const { params: { productId } } = match;
+          // ProductDetails.js
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+const ProductDetails = () => {
+  const { productId } = useParams();
   const [quantity, setQuantity] = useState(1);
 
-  const handleIncrease = () => setQuantity(prevQuantity => prevQuantity + 1);
-  const handleDecrease = () => setQuantity(prevQuantity => Math.max(prevQuantity - 1, 1));
+  const increaseQuantity = () => {
+    setQuantity(prevQuantity => prevQuantity + 1);
+  };
+
+  const decreaseQuantity = () => {
+    setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  };
+
+  const addToCart = () => {
+    // Add your logic to add the product to the cart
+    console.log(`Product added to cart - Product ID: ${productId}, Quantity: ${quantity}`);
+  };
 
   return (
     <div>
       <h2>Product Details</h2>
-      <p>Product ID: {productId}</p>
-      <p>Quantity: {quantity}</p>
-      <button onClick={handleIncrease}>Increase</button>
-      <button onClick={handleDecrease}>Decrease</button>
-      <button onClick={() => console.log('Add to Cart clicked')}>Add to Cart</button>
+      <div>
+        <button onClick={decreaseQuantity}>-</button>
+        <span>{quantity}</span>
+        <button onClick={increaseQuantity}>+</button>
+      </div>
+      <button onClick={addToCart}>Add to Cart</button>
     </div>
   );
 };
 
-export default SingleProduct;
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import ProductList from './ProductList';
-import SingleProduct from './SingleProduct';
-
-const App = () => {
-  return (
-    <Router>
-      <Switch>
-        <Route path="/product/:productId" component={SingleProduct} />
-        <Route path="/products" component={ProductList} />
-      </Switch>
-    </Router>
-  );
-};
-
-export default App;
+export default ProductDetails;
