@@ -30,3 +30,19 @@ export default Product;
 
 
  <button onClick={() => addToCart(product.id, product.name, quantity)}>Add to Cart</button>
+
+
+const Product = ({ product, addToCart }) => {
+  // ... other code
+
+  return (
+    <div>
+      {/* ... other code */}
+      <button onClick={() => {
+        console.log('Add to Cart button clicked');
+        addToCart(product.id, product.name, quantity);
+      }}>Add to Cart</button>
+    </div>
+  );
+};
+
