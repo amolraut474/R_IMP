@@ -1,67 +1,27 @@
-// ProductList.js
-import React from 'react';
-import Product from './Product';
-import Products from './productData'; // Import Products
+// Product.js
+import React, { useState } from 'react';
+const Product = ({ product, addToCart }) => {
+  const [quantity, setQuantity] = useState(1);
 
-const ProductList = ({ addToCart }) => {
-    console.log(Products);
-    return (
-        <div>
-            <h2>Product List</h2>
-            {Array.isArray(Products) && Products.length > 0 ? (
-                Products.map((product) => (
-                    <Product key={product.id} product={product} addToCart={addToCart} />
-                ))
-            ) : (
-                <p>No products available</p>
-            )}
-        </div>
-    );
+  const increaseQuantity = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
+
+  const decreaseQuantity = () => {
+    setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  };
+
+  return (
+    <div>
+      <h3>{product.name}</h3>
+      <div>
+        <button onClick={decreaseQuantity}>-</button>
+        <span>{quantity}</span>
+        <button onClick={increaseQuantity}>+</button>
+      </div>
+      <button onClick={() => addToCart(product.id, product.name, quantity)}>Add to Cart</button>
+    </div>
+  );
 };
 
-export default ProductList;
-
-
-// App.js
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import ProductList from './Component/Pp_com/ProductList';
-import SingleProduct from './Component/Pp_com/ProductDetails';
-import Products from './Component/Pp_com/Productd';
-import Cart from './Component/Pp_com/Cart';
-import Header from './Component/Header';
-
-function App() {
-    const [cartItems, setCartItems] = useState([]);
-
-    const addToCart = (productId, productName, quantity) => {
-        // ... (existing logic)
-    };
-
-    const removeFromCart = (productId) => {
-        // ... (existing logic)
-    };
-
-    return (
-        <div className="App">
-            <header><Header /></header>
-            <Link to="/cart">Cart</Link>
-            <Routes>
-                <Route path='/' element={<Home />} />
-                <Route path='/About' element={<About />} />
-                <Route path="/" element={<ProductList addToCart={addToCart} />} />
-                <Route path="/Products/:id" element={<SingleProduct addToCart={addToCart} />} />
-                <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} />} />
-            </Routes>
-        </div>
-    );
-}
-
-export default App;
-
-
-
-
-
-                    addToCart is not a function
-                    https://prnt.sc/qOGxfWo1WRcd
+export default Product;
