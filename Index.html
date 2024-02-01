@@ -20,29 +20,48 @@ const Product = ({ product, addToCart }) => {
         <span>{quantity}</span>
         <button onClick={increaseQuantity}>+</button>
       </div>
-      <button onClick={() => addToCart(product.id, product.name, quantity)}>Add to Cart</button>
+      <button onClick={() => addToCart(product.id, product.name, quantity)}>
+        Add to Cart
+      </button>
     </div>
   );
 };
 
 export default Product;
+// ProductList.js
+import React from 'react';
+import Product from './Product';
 
-// ProductDetails.js
+const ProductList = ({ products, addToCart }) => {
+  return (
+    <div>
+      <h2>Product List</h2>
+      {products.map((product) => (
+        <Product key={product.id} product={product} addToCart={addToCart} />
+      ))}
+    </div>
+  );
+};
+
+export default ProductList;
+// SingleProduct.js
 import React from 'react';
 
-const ProductDetails = ({ match }) => {
+const SingleProduct = ({ match, addToCart }) => {
   const productId = match.params.id;
   const product = { id: productId, name: `Product ${productId}` };
 
   return (
     <div>
       <h2>{product.name}</h2>
-      {/* Other product details */}
+      <button onClick={() => addToCart(product.id, product.name, 1)}>
+        Add to Cart
+      </button>
     </div>
   );
 };
 
-export default ProductDetails;
+export default SingleProduct;
 // Cart.js
 import React from 'react';
 
@@ -63,68 +82,11 @@ const Cart = ({ cartItems, removeFromCart }) => {
 };
 
 export default Cart;
-
 // App.js
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import ProductList from './ProductList';
-import ProductDetails from './ProductDetails';
-import Cart from './Cart';
-
-const App = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const products = [
-    { id: 1, name: 'Product 1' },
-    { id: 2, name: 'Product 2' },
-    // Add more products
-  ];
-
-  const addToCart = (productId, productName, quantity) => {
-    const existingItem = cartItems.find((item) => item.id === productId);
-
-    if (existingItem) {
-      const updatedCart = cartItems.map((item) =>
-        item.id === productId ? { ...item, quantity: item.quantity + quantity } : item
-      );
-      setCartItems(updatedCart);
-    } else {
-      setCartItems((prevCartItems) => [...prevCartItems, { id: productId, name: productName, quantity }]);
-    }
-  };
-
-  const removeFromCart = (productId) => {
-    const updatedCart = cartItems.filter((item) => item.id !== productId);
-    setCartItems(updatedCart);
-  };
-
-  return (
-    <Router>
-      <div>
-        <Link to="/cart">Cart</Link>
-        <Switch>
-          <Route path="/" exact>
-            <ProductList products={products} addToCart={addToCart} />
-          </Route>
-          <Route path="/product/:id" render={(props) => <ProductDetails {...props} />} />
-          <Route path="/cart">
-            <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
-  );
-};
-
-export default App;
-
-
-            [Product] is not a <Route> component. All component children of <Routes> must be a <Route> or <React.Fragment>
-
-// App.js
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import ProductList from './ProductList';
-import ProductDetails from './ProductDetails';
+import SingleProduct from './SingleProduct';
 import Cart from './Cart';
 
 const App = () => {
@@ -164,7 +126,7 @@ const App = () => {
           />
           <Route
             path="/product/:id"
-            element={<ProductDetails addToCart={addToCart} />}
+            element={<SingleProduct addToCart={addToCart} />}
           />
           <Route
             path="/cart"
