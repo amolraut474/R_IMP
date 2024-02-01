@@ -1,86 +1,9 @@
-import { Routes, Route } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import './App.css';
-import Home from './pages/Home';
-import About from './pages/About';
-// import ProductList from './Component/ProductList';
-// import ProductDetail from './Component/ProductDetail';
-import React, { useState } from 'react';
-import ProductList from './Component/Pp_com/ProductList';
-import SingleProduct from './Component/Pp_com/ProductDetails';
-import Products from'./Component/Pp_com/Productd';
-import Cart from './Component/Pp_com/Cart';
-
-// Components
-import Header from './Component/Header';
-
-function App() {
-  const [cartItems, setCartItems] = useState([]);
-  // const Products = [
-  //   { id: 1, name: 'Product 1' },
-  //   { id: 2, name: 'Product 2' },
-  //   // Add more products
-  // ];
-
-  const addToCart = (productId, productName, quantity) => {
-    const existingItem = cartItems.find((item) => item.id === productId);
-
-    if (existingItem) {
-      const updatedCart = cartItems.map((item) =>
-        item.id === productId ? { ...item, quantity: item.quantity + quantity } : item
-      );
-      setCartItems(updatedCart);
-    } else {
-      setCartItems((prevCartItems) => [...prevCartItems, { id: productId, name: productName, quantity }]);
-    }
-  };
-
-  const removeFromCart = (productId) => {
-    const updatedCart = cartItems.filter((item) => item.id !== productId);
-    setCartItems(updatedCart);
-  };
-
-  return (
-    <div className="App">
-      <header><Header /></header>
-      <Link to="/cart">Cart</Link>
-      <Routes>
-        <Route path='/' element={<Home />}></Route>
-        <Route path='/About' element={<About />}></Route>
-       
-        <Route
-          path="/"
-          element={<ProductList Products={Products} addToCart={addToCart} />}
-        ></Route>
-        <Route
-          path="/Products/:id"
-          element={<SingleProduct addToCart={addToCart} />}
-        ></Route>
-        <Route
-          path="/cart"
-          element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} />}
-        ></Route>
-      </Routes>
-
-
-    </div>
-
-
-
-
-  );
-
-}
-
-export default App;
-
-
-
 // ProductList.js
 import React from 'react';
 import Product from './Product';
+import Products from './productData'; // Import Products
 
-const ProductList = ({ Products, addToCart }) => {
+const ProductList = ({ addToCart }) => {
     console.log(Products);
     return (
         <div>
@@ -98,13 +21,40 @@ const ProductList = ({ Products, addToCart }) => {
 
 export default ProductList;
 
-// productData.js
-const Products = [
-    { id: 1, name: 'Product 1' },
-    { id: 2, name: 'Product 2' },
-    // Add more products
-  ];
-  
-  export default Products;
 
+// App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import ProductList from './Component/Pp_com/ProductList';
+import SingleProduct from './Component/Pp_com/ProductDetails';
+import Products from './Component/Pp_com/Productd';
+import Cart from './Component/Pp_com/Cart';
+import Header from './Component/Header';
 
+function App() {
+    const [cartItems, setCartItems] = useState([]);
+
+    const addToCart = (productId, productName, quantity) => {
+        // ... (existing logic)
+    };
+
+    const removeFromCart = (productId) => {
+        // ... (existing logic)
+    };
+
+    return (
+        <div className="App">
+            <header><Header /></header>
+            <Link to="/cart">Cart</Link>
+            <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/About' element={<About />} />
+                <Route path="/" element={<ProductList addToCart={addToCart} />} />
+                <Route path="/Products/:id" element={<SingleProduct addToCart={addToCart} />} />
+                <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} />} />
+            </Routes>
+        </div>
+    );
+}
+
+export default App;
