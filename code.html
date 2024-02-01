@@ -1,114 +1,20 @@
-// App.js
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ProductList from './ProductList';
-import ProductDetails from './ProductDetails';
-import Cart from './Cart';
-
-const App = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const products = [
-    { id: 1, name: 'Product 1', price: 20.99 },
-    { id: 2, name: 'Product 2', price: 15.49 },
-    // Add more dummy data as needed
-  ];
-
-  const addToCart = (productId, productName, price, quantity) => {
-    const newItem = { id: productId, name: productName, price, quantity };
-    setCartItems([...cartItems, newItem]);
-  };
-
-  return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={<ProductList products={products} />}
-        />
-        <Route
-          path="/product/:productId"
-          element={<ProductDetails products={products} addToCart={addToCart} />}
-        />
-      </Routes>
-      <Cart cartItems={cartItems} />
-    </Router>
-  );
-};
-
-export default App;
-
-// ProductList.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ProductList = ({ products }) => {
-  return (
-    <div>
-      <h2>Product List</h2>
-      {products.map(product => (
-        <div key={product.id}>
-          <Link to={`/product/${product.id}`}>
-            <h3>{product.name}</h3>
-          </Link>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export default ProductList;
-
-// ProductDetails.js
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-
-const ProductDetails = ({ products, addToCart }) => {
-  const { productId } = useParams();
-  const product = products.find(p => p.id === parseInt(productId));
-
-  const [quantity, setQuantity] = useState(1);
-
-  const increaseQuantity = () => {
-    setQuantity(prevQuantity => prevQuantity + 1);
-  };
-
-  const decreaseQuantity = () => {
-    setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
-  };
+const ProductList = () => {
+  const products = [
+    { id: 1, name: 'Product 1' },
+    { id: 2, name: 'Product 2' },
+    // Add more products as needed
+  ];
 
   return (
     <div>
-      <h2>Product Details</h2>
-      {product && (
-        <div>
-          <h3>{product.name}</h3>
-          <p>Price: ${product.price}</p>
-          <div>
-            <button onClick={decreaseQuantity}>-</button>
-            <span>{quantity}</span>
-            <button onClick={increaseQuantity}>+</button>
-          </div>
-          <button onClick={() => addToCart(product.id, product.name, product.price, quantity)}>
-            Add to Cart
-          </button>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default ProductDetails;
-// Cart.js
-import React from 'react';
-
-const Cart = ({ cartItems }) => {
-  return (
-    <div>
-      <h2>Shopping Cart</h2>
+      <h1>Product List</h1>
       <ul>
-        {cartItems.map(item => (
-          <li key={item.id}>
-            {item.name} - Price: ${item.price} - Quantity: {item.quantity}
+        {products.map(product => (
+          <li key={product.id}>
+            <Link to={`/product/${product.id}`}>{product.name}</Link>
           </li>
         ))}
       </ul>
@@ -116,53 +22,44 @@ const Cart = ({ cartItems }) => {
   );
 };
 
-export default Cart;
-history.ts:494 Uncaught Error: You cannot render a <Router> inside another <Router>. You should never have more than one in your app.
+export default ProductList;
 
+import React, { useState } from 'react';
 
+const SingleProduct = ({ match }) => {
+  const { params: { productId } } = match;
+  const [quantity, setQuantity] = useState(1);
 
+  const handleIncrease = () => setQuantity(prevQuantity => prevQuantity + 1);
+  const handleDecrease = () => setQuantity(prevQuantity => Math.max(prevQuantity - 1, 1));
 
-  import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import{BrowserRouter} from 'react-router-dom'
+  return (
+    <div>
+      <h2>Product Details</h2>
+      <p>Product ID: {productId}</p>
+      <p>Quantity: {quantity}</p>
+      <button onClick={handleIncrease}>Increase</button>
+      <button onClick={handleDecrease}>Decrease</button>
+      <button onClick={() => console.log('Add to Cart clicked')}>Add to Cart</button>
+    </div>
+  );
+};
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-    <App />
-    </BrowserRouter>
-   
-  </React.StrictMode>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
-
-  // index.js
+export default SingleProduct;
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import ProductList from './ProductList';
+import SingleProduct from './SingleProduct';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const App = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/product/:productId" component={SingleProduct} />
+        <Route path="/products" component={ProductList} />
+      </Switch>
+    </Router>
+  );
+};
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
-      
+export default App;
