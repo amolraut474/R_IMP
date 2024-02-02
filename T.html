@@ -240,3 +240,123 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
+        import React from 'react';
+import { Link } from 'react-router-dom';
+
+const ProductList = ({ addToCart }) => {
+  const products = [
+    { id: 1, name: 'Product 1', price: 20.99 },
+    { id: 2, name: 'Product 2', price: 15.49 },
+    // Add more dummy data as needed
+  ];
+
+  return (
+    <div>
+      <h2>Product List</h2>
+      {products.map(product => (
+        <div key={product.id}>
+          <Link to={`/product/${product.id}`}>
+            <h3>{product.name}</h3>
+          </Link>
+          <button onClick={() => addToCart(product.id, 1)}>Add to Cart</button>
+          <br />
+          <Link to={`/product/${product.id}`}>View Details</Link>
+        </div>
+      ))}
+      <Link to="/cart">View Cart</Link>
+    </div>
+  );
+};
+
+export default ProductList;
+
+
+
+// ... (existing code)
+
+const ProductDetails = ({ addToCart }) => {
+  const { productId } = useParams();
+  const [quantity, setQuantity] = useState(1);
+
+  const increaseQuantity = () => {
+    setQuantity(prevQuantity => prevQuantity + 1);
+  };
+
+  const decreaseQuantity = () => {
+    setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  };
+
+  const handleAddToCart = () => {
+    addToCart(productId, quantity);
+  };
+
+  return (
+    <div>
+      <h2>Product Details</h2>
+      <div>
+        <button onClick={decreaseQuantity}>-</button>
+        <span>{quantity}</span>
+        <button onClick={increaseQuantity}>+</button>
+      </div>
+      <button onClick={handleAddToCart}>Add to Cart</button>
+      <br />
+      <Link to="/cart">View Cart</Link>
+    </div>
+  );
+};
+
+export default ProductDetails;
+
+import React, { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import ProductList from './Component/Pp_com/ProductList';
+import ProductDetails from './Component/Pp_com/ProductDetails';
+import Home from './pages/Home';
+import About from './pages/About';
+import Cart from './Component/Pp_com/Cart';
+
+const App = () => {
+  const [cartItems, setCartItems] = useState([]); // State for managing cart items
+
+  // Function to add items to the cart
+  const addToCart = (productId, quantity) => {
+    const existingProductIndex = cartItems.findIndex(item => item.id === productId);
+
+    if (existingProductIndex !== -1) {
+      // If the product is already in the cart, update the quantity
+      const updatedCartItems = [...cartItems];
+      updatedCartItems[existingProductIndex].quantity += quantity;
+      setCartItems(updatedCartItems);
+    } else {
+      // If the product is not in the cart, add it
+      const product = { id: productId, name: `Product ${productId}`, price: 20.99, quantity };
+      setCartItems(prevCartItems => [...prevCartItems, product]);
+    }
+  };
+
+  return (
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/About' element={<About />} />
+      <Route
+        path="/"
+        element={<ProductList addToCart={addToCart} />}
+      />
+      <Route
+        path="/product/:productId"
+        element={<ProductDetails addToCart={addToCart} />}
+      />
+      <Route
+        path="/cart"
+        element={<Cart cartItems={cartItems} />}
+      />
+    </Routes>
+  );
+};
+
+export default App;
+        
