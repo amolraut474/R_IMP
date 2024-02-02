@@ -105,3 +105,47 @@ const Cart = ({ cartItems }) => {
 };
 
 export default Cart;
+
+// App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ProductList from './Component/Pp_com/ProductList';
+import ProductDetails from './Component/Pp_com/ProductDetails';
+import Home from './pages/Home';
+import About from './pages/About';
+import Cart from './Cart'; // Import the Cart component
+
+const App = () => {
+  const [cartItems, setCartItems] = useState([]); // State for managing cart items
+
+  return (
+    <Router>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/About' element={<About />} />
+        <Route path="/product-list" element={<ProductList />} />
+        <Route
+          path="/product/:productId"
+          element={<ProductDetails addToCart={addToCart} />} // Pass addToCart function
+        />
+        <Route
+          path="/cart"
+          element={<Cart cartItems={cartItems} />} // Pass the cartItems state
+        />
+      </Routes>
+    </Router>
+  );
+
+  // Function to add items to the cart
+  function addToCart(productId, quantity) {
+    // Implement your logic to fetch product details based on productId
+    const product = { id: productId, name: `Product ${productId}`, price: 20.99, quantity };
+
+    // Update the cartItems state
+    setCartItems(prevCartItems => [...prevCartItems, product]);
+  }
+};
+
+export default App;
+
+          
