@@ -1,0 +1,36 @@
+// App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ProductList from './ProductList';
+import ProductDetails from './ProductDetails';
+import ShoppingCart from './ShoppingCart'; // Import your ShoppingCart component
+
+function App() {
+  const [cart, setCart] = useState([]); // State to manage the cart
+
+  const addToCart = (product, quantity) => {
+    // Add the selected product to the cart
+    setCart(prevCart => [...prevCart, { ...product, quantity }]);
+  };
+
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={<ProductList addToCart={addToCart} />} // Pass addToCart function to ProductList
+        />
+        <Route
+          path="/product/:productId"
+          element={<ProductDetails addToCart={addToCart} />} // Pass addToCart function to ProductDetails
+        />
+        <Route
+          path="/cart"
+          element={<ShoppingCart cart={cart} />} // Pass the cart state to ShoppingCart
+        />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
