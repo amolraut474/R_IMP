@@ -312,3 +312,24 @@ const addToCart = (productId, quantity) => {
 
 
         
+const addToCart = (productId, quantity) => {
+  const selectedProduct = products.find(product => product.id === productId);
+
+  if (selectedProduct) {
+    const existingProductIndex = cartItems.findIndex(item => item.id === productId);
+
+    if (existingProductIndex !== -1) {
+      const updatedCartItems = [...cartItems];
+      updatedCartItems[existingProductIndex].quantity += quantity;
+      setCartItems(updatedCartItems);
+    } else {
+      const productToAdd = {
+        id: selectedProduct.id,
+        name: selectedProduct.name,
+        price: selectedProduct.price,
+        quantity,
+      };
+      setCartItems(prevCartItems => [...prevCartItems, productToAdd]);
+    }
+  }
+};
