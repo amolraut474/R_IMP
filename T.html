@@ -139,49 +139,78 @@ const App = () => {
 
 export default App;
 
-import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import "./App.css";
+import { useState } from 'react';
+import React from "react";
+import {  Route, Routes } from "react-router-dom";
+import Header from "./components/Header_Com/Header";
+import Footer from "./components/Footer_Com/Footer";
+import ProductDetails from "./components/Product_Com/ProductDynamic";
+import ProductList from "./components/Product_Com/ProductList";
+import Cart from "./components/Product_Com/Cart";
+import Home from "./pages/Home";
+import Pages from "./pages/Pages";
+import Products from "./pages/Products";
+import Blog from "./pages/Blog";
+import Shop from "./pages/Shop";
+import Contact from "./pages/Contact Us";
 
-const ProductDetails = ({ addToCart }) => {
-  const { productId } = useParams();
-  const [quantity, setQuantity] = useState(1);
 
-  // Assuming products is your data source
-  const product = products.find(product => product.id === parseInt(productId, 10));
+// Components
+function App() {
+  const [cartItems, setCartItems] = useState([]); // State for managing cart items
 
-  if (!product) {
-    // Handle product not found
-    return <div>Product not found</div>;
-  }
+  // Function to add items to the cart
+  const addToCart = (productId, quantity) => {
+    const existingProductIndex = cartItems.findIndex(item => item.id === productId);
 
-  const increaseQuantity = () => {
-    setQuantity(prevQuantity => prevQuantity + 1);
-  };
-
-  const decreaseQuantity = () => {
-    setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
-  };
-
-  const handleAddToCart = () => {
-    addToCart(productId, quantity);
+    if (existingProductIndex !== -1) {
+      // If the product is already in the cart, update the quantity
+      const updatedCartItems = [...cartItems];
+      updatedCartItems[existingProductIndex].quantity += quantity;
+      setCartItems(updatedCartItems);
+    } else {
+      // If the product is not in the cart, add it
+      const product = { id: productId, name: `Product ${productId}`, price: 20.99, quantity };
+      setCartItems(prevCartItems => [...prevCartItems, product]);
+    }
   };
 
   return (
-    <div>
-      <h2>{product.name}</h2>
-      <p>{product.description}</p>
-      <div>
-        <button onClick={decreaseQuantity}>-</button>
-        <span>{quantity}</span>
-        <button onClick={increaseQuantity}>+</button>
-      </div>
-      <button onClick={handleAddToCart}>Add to Cart</button>
-      <br />
-      <Link to="/cart">View Cart</Link>
-    </div>
-  );
-};
+  <div className="App">
+ <header><Header/></header>
+ 
+ <Routes>
+  <Route path='/' element={<Home/>}></Route>
+  <Route path='/Pages' element={<Pages/>}></Route>
+  <Route path='/Products' element={<Products/>}></Route>
+  <Route path='/Shop' element={<Shop/>}></Route>
+  <Route path='/Blog' element={<Blog/>}></Route>
+  <Route path='/Contact us' element={<Contact us/>}></Route>
 
-export default ProductDetails;
+  <Route
+        path="/"
+        element={<ProductList addToCart={addToCart} />}
+      />
+      <Route
+        path="/product/:productId"
+        element={<ProductDetails addToCart={addToCart} />}
+      />
+      <Route
+        path="/cart"
+        element={<Cart cartItems={cartItems} />}
+      />
+</Routes>
+
+<footer><Footer/></footer>
+</div>
+
+  );
+ 
+}
+
+export default App;
+
+
 
         
