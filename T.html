@@ -1,6 +1,5 @@
-        import React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-
 const ProductList = ({ addToCart }) => {
   const products = [
     { id: 1, name: 'Product 1', price: 20.99 },
@@ -27,9 +26,6 @@ const ProductList = ({ addToCart }) => {
 };
 
 export default ProductList;
-
-
-
 
 
 import React, { useState } from 'react';
@@ -70,8 +66,29 @@ export default ProductDetails;
 
 
 
+          // Cart.js
+          import React from 'react';
 
-import React from 'react';
+          const Cart = ({ cartItems }) => {
+            return (
+              <div>
+                <h2>Shopping Cart</h2>
+                <ul>
+                  {cartItems.map(item => (
+                    <li key={item.id}>
+                      {item.name} - Price: ${item.price} - Quantity: {item.quantity}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          };
+          
+          export default Cart;
+
+
+
+          import React from 'react';
 
 import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
@@ -121,85 +138,3 @@ const App = () => {
 };
 
 export default App;
-
-
-                  // Cart.js
-          import React from 'react';
-
-          const Cart = ({ cartItems }) => {
-            return (
-              <div>
-                <h2>Shopping Cart</h2>
-                <ul>
-                  {cartItems.map(item => (
-                    <li key={item.id}>
-                      {item.name} - Price: ${item.price} - Quantity: {item.quantity}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          };
-          
-          export default Cart;
-
-
-
-
-
-              
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-const ProductList = ({ addToCart }) => {
-  const products = [
-    { id: 1, name: 'Product 1', price: 20.99 },
-    { id: 2, name: 'Product 2', price: 15.49 },
-    // Add more dummy data as needed
-  ];
-
-  return (
-    <div>
-      <h2>Product List</h2>
-      {products.map(product => (
-        <div key={product.id}>
-          <Link to={`/product/${product.id}`}>
-            <h3>{product.name}</h3>
-          </Link>
-          <button onClick={() => addToCart(product.id, 1)}>Add to Cart</button>
-          <br />
-        </div>
-      ))}
-      <Link to="/cart">View Cart</Link>
-    </div>
-  );
-};
-
-export default ProductList;
-import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-
-const ProductDetails = ({ addToCart }) => {
-  const { productId } = useParams();
-  const [quantity, setQuantity] = useState(1);
-
-  const handleAddToCart = () => {
-    addToCart(productId, quantity);
-  };
-
-  return (
-    <div>
-      <h2>Product Details</h2>
-      <div>
-        <button onClick={() => setQuantity(prevQuantity => Math.max(prevQuantity - 1, 1))}>-</button>
-        <span>{quantity}</span>
-        <button onClick={() => setQuantity(prevQuantity => prevQuantity + 1)}>+</button>
-      </div>
-      <button onClick={handleAddToCart}>Add to Cart</button>
-      <br />
-      <Link to="/cart">View Cart</Link>
-    </div>
-  );
-};
-
-export default ProductDetails;
