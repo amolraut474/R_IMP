@@ -332,4 +332,22 @@ const addToCart = (productId, quantity) => {
       setCartItems(prevCartItems => [...prevCartItems, productToAdd]);
     }
   }
+};import React from 'react';
+
+const Cart = ({ cartItems }) => {
+  return (
+    <div>
+      <h2>Shopping Cart</h2>
+      <ul>
+        {cartItems.map(item => (
+          <li key={item.id}>
+            {item.name} - Price: ${item.price} - Quantity: {item.quantity}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 };
+
+export default Cart;
+
