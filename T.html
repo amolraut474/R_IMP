@@ -1,3 +1,24 @@
+// App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Cart from './Cart';  // Import your Cart component
+
+function App() {
+  const [cartItems, setCartItems] = useState([]);
+
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path="/cart"
+          element={<Cart cartItems={cartItems} />}  // Pass the cart items to the Cart component
+        />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
 // Cart.js
 import React from 'react';
 
@@ -5,13 +26,17 @@ const Cart = ({ cartItems }) => {
   return (
     <div>
       <h2>Shopping Cart</h2>
-      <ul>
-        {cartItems.map(item => (
-          <li key={item.id}>
-            {item.name} - Price: ${item.price} - Quantity: {item.quantity}
-          </li>
-        ))}
-      </ul>
+      {cartItems.length === 0 ? (
+        <p>Your cart is empty.</p>
+      ) : (
+        <ul>
+          {cartItems.map(item => (
+            <li key={item.id}>
+              {item.name} - Price: ${item.price} - Quantity: {item.quantity}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
