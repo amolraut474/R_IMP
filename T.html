@@ -1,42 +1,105 @@
-// App.js
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Cart from './Cart';  // Import your Cart component
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import ProductList from './Component/Pp_com/ProductList';
+import ProductDetails from './Component/Pp_com/ProductDetails';
+import Home from './pages/Home';
+import About from './pages/About';
 
-function App() {
-  const [cartItems, setCartItems] = useState([]);
-
+const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/cart"
-          element={<Cart cartItems={cartItems} />}  // Pass the cart items to the Cart component
-        />
-      </Routes>
-    </Router>
+
+    <Routes>
+      <Route path='/' element={<Home />}></Route>
+      <Route path='/About' element={<About />}></Route>
+      <Route path="/" element={<ProductList />} />
+        <Route path="/product/:productId" element={<ProductDetails />} />
+    </Routes>
+
   );
-}
+};
 
 export default App;
-// Cart.js
+
+
+               // ProductList.js
+     import React from 'react';
+     import { Link } from 'react-router-dom';
+     
+     const ProductList = () => {
+       const products = [
+         { id: 1, name: 'Product 1', price: 20.99 },
+         { id: 2, name: 'Product 2', price: 15.49 },
+         // Add more dummy data as needed
+       ];
+     
+       return (
+         <div>
+           <h2>Product List</h2>
+           {products.map(product => (
+             <div key={product.id}>
+               <Link to={`/product/${product.id}`}>
+                 <h3>{product.name}</h3>
+               </Link>
+             </div>
+           ))}
+         </div>
+       );
+     };
+     
+     export default ProductList;
+
+
+                    // ProductDetails.js
+          import React, { useState } from 'react';
+          import { useParams } from 'react-router-dom';
+          
+          const ProductDetails = () => {
+            const { productId } = useParams();
+            const [quantity, setQuantity] = useState(1);
+          
+            const increaseQuantity = () => {
+              setQuantity(prevQuantity => prevQuantity + 1);
+            };
+          
+            const decreaseQuantity = () => {
+              setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+            };
+          
+            const addToCart = () => {
+              // Add your logic to add the product to the cart
+              console.log(`Product added to cart - Product ID: ${productId}, Quantity: ${quantity}`);
+            };
+          
+            return (
+              <div>
+                <h2>Product Details</h2>
+                <div>
+                  <button onClick={decreaseQuantity}>-</button>
+                  <span>{quantity}</span>
+                  <button onClick={increaseQuantity}>+</button>
+                </div>
+                <button onClick={addToCart}>Add to Cart</button>
+              </div>
+            );
+          };
+          
+          export default ProductDetails;
+
+
+          // Cart.js
 import React from 'react';
 
 const Cart = ({ cartItems }) => {
   return (
     <div>
       <h2>Shopping Cart</h2>
-      {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
-      ) : (
-        <ul>
-          {cartItems.map(item => (
-            <li key={item.id}>
-              {item.name} - Price: ${item.price} - Quantity: {item.quantity}
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul>
+        {cartItems.map(item => (
+          <li key={item.id}>
+            {item.name} - Price: ${item.price} - Quantity: {item.quantity}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
