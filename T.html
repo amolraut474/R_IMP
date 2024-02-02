@@ -1,90 +1,81 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+// App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProductList from './Component/Pp_com/ProductList';
 import ProductDetails from './Component/Pp_com/ProductDetails';
 import Home from './pages/Home';
 import About from './pages/About';
+import Cart from './Cart'; // Import the Cart component
 
 const App = () => {
+  const [cartItems, setCartItems] = useState([]); // State for managing cart items
+
+  // Function to add items to the cart
+  const addToCart = (productId, quantity) => {
+    // Implement your logic to fetch product details based on productId
+    const product = { id: productId, name: `Product ${productId}`, price: 20.99, quantity };
+
+    // Update the cartItems state
+    setCartItems(prevCartItems => [...prevCartItems, product]);
+  };
+
   return (
-
-    <Routes>
-      <Route path='/' element={<Home />}></Route>
-      <Route path='/About' element={<About />}></Route>
-      <Route path="/" element={<ProductList />} />
-        <Route path="/product/:productId" element={<ProductDetails />} />
-    </Routes>
-
+    <Router>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/About' element={<About />} />
+        <Route path="/product-list" element={<ProductList />} />
+        <Route
+          path="/product/:productId"
+          element={<ProductDetails addToCart={addToCart} />} // Pass addToCart function
+        />
+        <Route
+          path="/cart"
+          element={<Cart cartItems={cartItems} />} // Pass the cartItems state
+        />
+      </Routes>
+    </Router>
   );
 };
 
 export default App;
 
+          // ProductDetails.js
+import React, { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 
-               // ProductList.js
-     import React from 'react';
-     import { Link } from 'react-router-dom';
-     
-     const ProductList = () => {
-       const products = [
-         { id: 1, name: 'Product 1', price: 20.99 },
-         { id: 2, name: 'Product 2', price: 15.49 },
-         // Add more dummy data as needed
-       ];
-     
-       return (
-         <div>
-           <h2>Product List</h2>
-           {products.map(product => (
-             <div key={product.id}>
-               <Link to={`/product/${product.id}`}>
-                 <h3>{product.name}</h3>
-               </Link>
-             </div>
-           ))}
-         </div>
-       );
-     };
-     
-     export default ProductList;
+const ProductDetails = ({ addToCart }) => {
+  const { productId } = useParams();
+  const [quantity, setQuantity] = useState(1);
 
+  const increaseQuantity = () => {
+    setQuantity(prevQuantity => prevQuantity + 1);
+  };
 
-                    // ProductDetails.js
-          import React, { useState } from 'react';
-          import { useParams } from 'react-router-dom';
-          
-          const ProductDetails = () => {
-            const { productId } = useParams();
-            const [quantity, setQuantity] = useState(1);
-          
-            const increaseQuantity = () => {
-              setQuantity(prevQuantity => prevQuantity + 1);
-            };
-          
-            const decreaseQuantity = () => {
-              setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
-            };
-          
-            const addToCart = () => {
-              // Add your logic to add the product to the cart
-              console.log(`Product added to cart - Product ID: ${productId}, Quantity: ${quantity}`);
-            };
-          
-            return (
-              <div>
-                <h2>Product Details</h2>
-                <div>
-                  <button onClick={decreaseQuantity}>-</button>
-                  <span>{quantity}</span>
-                  <button onClick={increaseQuantity}>+</button>
-                </div>
-                <button onClick={addToCart}>Add to Cart</button>
-              </div>
-            );
-          };
-          
-          export default ProductDetails;
+  const decreaseQuantity = () => {
+    setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  };
 
+  const handleAddToCart = () => {
+    addToCart(productId, quantity);
+  };
+
+  return (
+    <div>
+      <h2>Product Details</h2>
+      <div>
+        <button onClick={decreaseQuantity}>-</button>
+        <span>{quantity}</span>
+        <button onClick={increaseQuantity}>+</button>
+      </div>
+      <button onClick={handleAddToCart}>Add to Cart</button>
+      <br />
+      <Link to="/cart">View Cart</Link>
+    </div>
+  );
+};
+
+export default ProductDetails;
 
           // Cart.js
 import React from 'react';
@@ -105,47 +96,3 @@ const Cart = ({ cartItems }) => {
 };
 
 export default Cart;
-
-// App.js
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ProductList from './Component/Pp_com/ProductList';
-import ProductDetails from './Component/Pp_com/ProductDetails';
-import Home from './pages/Home';
-import About from './pages/About';
-import Cart from './Cart'; // Import the Cart component
-
-const App = () => {
-  const [cartItems, setCartItems] = useState([]); // State for managing cart items
-
-  return (
-    <Router>
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/About' element={<About />} />
-        <Route path="/product-list" element={<ProductList />} />
-        <Route
-          path="/product/:productId"
-          element={<ProductDetails addToCart={addToCart} />} // Pass addToCart function
-        />
-        <Route
-          path="/cart"
-          element={<Cart cartItems={cartItems} />} // Pass the cartItems state
-        />
-      </Routes>
-    </Router>
-  );
-
-  // Function to add items to the cart
-  function addToCart(productId, quantity) {
-    // Implement your logic to fetch product details based on productId
-    const product = { id: productId, name: `Product ${productId}`, price: 20.99, quantity };
-
-    // Update the cartItems state
-    setCartItems(prevCartItems => [...prevCartItems, product]);
-  }
-};
-
-export default App;
-
-          
