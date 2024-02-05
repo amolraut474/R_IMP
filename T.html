@@ -1,353 +1,94 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-const ProductList = ({ addToCart }) => {
-  const products = [
-    { id: 1, name: 'Product 1', price: 20.99 },
-    { id: 2, name: 'Product 2', price: 15.49 },
-    // Add more dummy data as needed
-  ];
+// src/ProductList.js
+import React, { useState } from 'react';
+import './styles.css';
+
+const ProductList = () => {
+  // ... (Same as previous code)
 
   return (
     <div>
-      <h2>Product List</h2>
-      {products.map(product => (
-        <div key={product.id}>
-          <Link to={`/product/${product.id}`}>
-            <h3>{product.name}</h3>
-          </Link>
-          <button onClick={() => addToCart(product.id, 1)}>Add to Cart</button>
-          <br />
-          <Link to={`/product/${product.id}`}>View Details</Link>
+      {products.map((product) => (
+        <div
+          key={product.id}
+          onMouseEnter={() => handleHover(product.id)}
+          onMouseLeave={() => handleHover(null)}
+        >
+          <h3>{product.name}</h3>
+          <p>${product.price}</p>
+          {hoveredProductId === product.id && (
+            <>
+              <button onClick={() => handleAddToCart(product.id)}>Add to Cart</button>
+              <button onClick={() => handleQuickView(product.id)}>Quick View</button>
+            </>
+          )}
         </div>
       ))}
-      <Link to="/cart">View Cart</Link>
+
+      {/* Quick View Modal */}
+      {selectedProductId && (
+        <div className="modal">
+          {/* Implement Quick View modal with product details */}
+          <p>Quick View for Product {selectedProductId}</p>
+          <button onClick={() => setSelectedProductId(null)}>Close</button>
+        </div>
+      )}
     </div>
   );
 };
 
 export default ProductList;
+/* src/styles.css */
 
-
-import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-
-const ProductDetails = ({ addToCart }) => {
-  const { productId } = useParams();
-  const [quantity, setQuantity] = useState(1);
-
-  const increaseQuantity = () => {
-    setQuantity(prevQuantity => prevQuantity + 1);
-  };
-
-  const decreaseQuantity = () => {
-    setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
-  };
-
-  const handleAddToCart = () => {
-    addToCart(productId, quantity);
-  };
-
-  return (
-    <div>
-      <h2>Product Details</h2>
-      <div>
-        <button onClick={decreaseQuantity}>-</button>
-        <span>{quantity}</span>
-        <button onClick={increaseQuantity}>+</button>
-      </div>
-      <button onClick={handleAddToCart}>Add to Cart</button>
-      <br />
-      <Link to="/cart">View Cart</Link>
-    </div>
-  );
-};
-
-export default ProductDetails;
-
-
-
-          // Cart.js
-          import React from 'react';
-
-          const Cart = ({ cartItems }) => {
-            return (
-              <div>
-                <h2>Shopping Cart</h2>
-                <ul>
-                  {cartItems.map(item => (
-                    <li key={item.id}>
-                      {item.name} - Price: ${item.price} - Quantity: {item.quantity}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          };
-          
-          export default Cart;
-
-
-
-          import React from 'react';
-
-import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import ProductList from './Component/Pp_com/ProductList';
-import ProductDetails from './Component/Pp_com/ProductDetails';
-import Home from './pages/Home';
-import About from './pages/About';
-import Cart from './Component/Pp_com/Cart'; // Import the Cart component
-const App = () => {
-  const [cartItems, setCartItems] = useState([]); // State for managing cart items
-
-  // Function to add items to the cart
-  const addToCart = (productId, quantity) => {
-    const existingProductIndex = cartItems.findIndex(item => item.id === productId);
-
-    if (existingProductIndex !== -1) {
-      // If the product is already in the cart, update the quantity
-      const updatedCartItems = [...cartItems];
-      updatedCartItems[existingProductIndex].quantity += quantity;
-      setCartItems(updatedCartItems);
-    } else {
-      // If the product is not in the cart, add it
-      const product = { id: productId, name: `Product ${productId}`, price: 20.99, quantity };
-      setCartItems(prevCartItems => [...prevCartItems, product]);
-    }
-  };
-  return (
-
-    <Routes>
-      <Route path='/' element={<Home />}></Route>
-      <Route path='/About' element={<About />}></Route>
-      <Route
-        path="/"
-        element={<ProductList addToCart={addToCart} />}
-      />
-      <Route
-        path="/product/:productId"
-        element={<ProductDetails addToCart={addToCart} />}
-      />
-      <Route
-        path="/cart"
-        element={<Cart cartItems={cartItems} />}
-      />
-    </Routes>
-
-  );
-};
-
-export default App;
-
-import "./App.css";
-import { useState } from 'react';
-import React from "react";
-import {  Route, Routes } from "react-router-dom";
-import Header from "./components/Header_Com/Header";
-import Footer from "./components/Footer_Com/Footer";
-import ProductDetails from "./components/Product_Com/ProductDynamic";
-import ProductList from "./components/Product_Com/ProductList";
-import Cart from "./components/Product_Com/Cart";
-import Home from "./pages/Home";
-import Pages from "./pages/Pages";
-import Products from "./pages/Products";
-import Blog from "./pages/Blog";
-import Shop from "./pages/Shop";
-import Contact from "./pages/Contact Us";
-
-
-// Components
-function App() {
-  const [cartItems, setCartItems] = useState([]); // State for managing cart items
-
-  // Function to add items to the cart
-  const addToCart = (productId, quantity) => {
-    const existingProductIndex = cartItems.findIndex(item => item.id === productId);
-
-    if (existingProductIndex !== -1) {
-      // If the product is already in the cart, update the quantity
-      const updatedCartItems = [...cartItems];
-      updatedCartItems[existingProductIndex].quantity += quantity;
-      setCartItems(updatedCartItems);
-    } else {
-      // If the product is not in the cart, add it
-      const product = { id: productId, name: `Product ${productId}`, price: 20.99, quantity };
-      setCartItems(prevCartItems => [...prevCartItems, product]);
-    }
-  };
-
-  return (
-  <div className="App">
- <header><Header/></header>
- 
- <Routes>
-  <Route path='/' element={<Home/>}></Route>
-  <Route path='/Pages' element={<Pages/>}></Route>
-  <Route path='/Products' element={<Products/>}></Route>
-  <Route path='/Shop' element={<Shop/>}></Route>
-  <Route path='/Blog' element={<Blog/>}></Route>
-  <Route path='/Contact us' element={<Contact us/>}></Route>
-
-  <Route
-        path="/"
-        element={<ProductList addToCart={addToCart} />}
-      />
-      <Route
-        path="/product/:productId"
-        element={<ProductDetails addToCart={addToCart} />}
-      />
-      <Route
-        path="/cart"
-        element={<Cart cartItems={cartItems} />}
-      />
-</Routes>
-
-<footer><Footer/></footer>
-</div>
-
-  );
- 
+/* Container styling */
+div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
-export default App;
-
-
-
-  import "./App.css";
-import { useState } from 'react';
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-import Header from "./components/Header_Com/Header";
-import Footer from "./components/Footer_Com/Footer";
-import ProductDetails from "./components/Product_Com/ProductDynamic";
-import ProductList from "./components/Product_Com/ProductList";
-import Cart from "./components/Product_Com/Cart";
-import Home from "./pages/Home";
-import Pages from "./pages/Pages";
-import Products from "./pages/Products";
-import Blog from "./pages/Blog";
-import Shop from "./pages/Shop";
-import Contact from "./pages/Contact Us";
-
-// Example: Define your products array outside the component
-const products = [
-  { id: 1, name: 'Product 1', price: 20.99 },
-  { id: 2, name: 'Product 2', price: 15.49 },
-  // Add more dummy data as needed
-];
-
-function App() {
-  const [cartItems, setCartItems] = useState([]); // State for managing cart items
-
-  // Function to add items to the cart
-  const addToCart = (productId, quantity) => {
-    // Find the actual product based on productId
-    const selectedProduct = products.find(product => product.id === productId);
-
-    if (selectedProduct) {
-      // Check if the product is already in the cart
-      const existingProductIndex = cartItems.findIndex(item => item.id === productId);
-
-      if (existingProductIndex !== -1) {
-        // If the product is already in the cart, update the quantity
-        const updatedCartItems = [...cartItems];
-        updatedCartItems[existingProductIndex].quantity += quantity;
-        setCartItems(updatedCartItems);
-      } else {
-        // If the product is not in the cart, add it
-        const productToAdd = { ...selectedProduct, quantity };
-        setCartItems(prevCartItems => [...prevCartItems, productToAdd]);
-      }
-    }
-  };
-
-  return (
-    <div className="App">
-      <header><Header /></header>
-
-      <Routes>
-        {/* ... your other routes ... */}
-        <Route
-          path="/"
-          element={<ProductList addToCart={addToCart} />}
-        />
-        <Route
-          path="/product/:productId"
-          element={<ProductDetails addToCart={addToCart} />}
-        />
-        <Route
-          path="/cart"
-          element={<Cart cartItems={cartItems} />}
-        />
-      </Routes>
-
-      <footer><Footer /></footer>
-    </div>
-  );
+/* Product card styling */
+div > div {
+  width: 200px;
+  padding: 15px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  position: relative;
 }
 
-export default App;
-      
-const addToCart = (productId, quantity) => {
-  const selectedProduct = products.find(product => product.id === productId);
+/* Hover effect */
+div > div:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-  if (selectedProduct) {
-    const existingProductIndex = cartItems.findIndex(item => item.id === productId);
+/* Button styling */
+button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  margin: 5px;
+  cursor: pointer;
+}
 
-    if (existingProductIndex !== -1) {
-      const updatedCartItems = [...cartItems];
-      updatedCartItems[existingProductIndex].quantity += quantity;
-      setCartItems(updatedCartItems);
-    } else {
-      const productToAdd = {
-        id: selectedProduct.id,
-        name: selectedProduct.name,
-        price: selectedProduct.price,
-        quantity,
-      };
-      setCartItems(prevCartItems => [...prevCartItems, productToAdd]);
-    }
-  }
-};
+/* Quick View Modal styling */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  z-index: 999;
+}
 
-
-        
-const addToCart = (productId, quantity) => {
-  const selectedProduct = products.find(product => product.id === productId);
-
-  if (selectedProduct) {
-    const existingProductIndex = cartItems.findIndex(item => item.id === productId);
-
-    if (existingProductIndex !== -1) {
-      const updatedCartItems = [...cartItems];
-      updatedCartItems[existingProductIndex].quantity += quantity;
-      setCartItems(updatedCartItems);
-    } else {
-      const productToAdd = {
-        id: selectedProduct.id,
-        name: selectedProduct.name,
-        price: selectedProduct.price,
-        quantity,
-      };
-      setCartItems(prevCartItems => [...prevCartItems, productToAdd]);
-    }
-  }
-};import React from 'react';
-
-const Cart = ({ cartItems }) => {
-  return (
-    <div>
-      <h2>Shopping Cart</h2>
-      <ul>
-        {cartItems.map(item => (
-          <li key={item.id}>
-            {item.name} - Price: ${item.price} - Quantity: {item.quantity}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default Cart;
-
+/* Close button in Quick View Modal */
+.modal button {
+  background-color: #ff5722;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
