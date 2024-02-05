@@ -19,7 +19,9 @@ function App() {
         <Route path="/" exact>
           <ProductList onAddToCart={handleAddToCart} />
         </Route>
-        <Route path="/product/:id" component={SingleProduct} />
+        <Route path="/product/:id">
+          <SingleProduct onAddToCart={handleAddToCart} />
+        </Route>
         <Route path="/cart">
           <Cart cart={cart} />
         </Route>
@@ -29,7 +31,6 @@ function App() {
 }
 
 export default App;
-
 // src/ProductList.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -42,8 +43,6 @@ const ProductList = ({ onAddToCart }) => {
     // Add more products as needed
   ]);
 
-  const [hoveredProductId, setHoveredProductId] = useState(null);
-
   const handleAddToCart = (product) => {
     onAddToCart(product);
   };
@@ -52,23 +51,12 @@ const ProductList = ({ onAddToCart }) => {
     <div>
       <h1>Product List</h1>
       {products.map((product) => (
-        <div
-          key={product.id}
-          onMouseEnter={() => setHoveredProductId(product.id)}
-          onMouseLeave={() => setHoveredProductId(null)}
-        >
+        <div key={product.id}>
           <Link to={`/product/${product.id}`}>
             <h3>{product.name}</h3>
           </Link>
           <p>${product.price}</p>
-          {hoveredProductId === product.id && (
-            <>
-              <button onClick={() => handleAddToCart(product)}>Add to Cart</button>
-              <Link to={`/product/${product.id}`}>
-                <button>Quick View</button>
-              </Link>
-            </>
-          )}
+          <button onClick={() => handleAddToCart(product)}>Add to Cart</button>
         </div>
       ))}
     </div>
@@ -82,26 +70,41 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './styles.css';
 
-const SingleProduct = () => {
+const SingleProduct = ({ onAddToCart }) => {
   const { id } = useParams();
+  const [quantity, setQuantity] = useState(1);
 
   // Fetch product details based on the 'id' parameter
   // For simplicity, using static data here
-  const [product, setProduct] = useState({
+  const product = {
     id: parseInt(id),
     name: `Product ${id}`,
     price: 20.99,
-    quantity: 0,
-  });
+  };
 
   const handleAddToCart = () => {
-    // Implement adding to cart functionality
+    onAddToCart({ ...product, quantity });
+  };
+
+  const handleIncrease = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity((prevQuantity) => prevQuantity - 1);
+    }
   };
 
   return (
     <div>
       <h1>{product.name}</h1>
       <p>${product.price}</p>
+      <div>
+        <button onClick={handleIncrease}>+</button>
+        <span>{quantity}</span>
+        <button onClick={handleDecrease}>-</button>
+      </div>
       <button onClick={handleAddToCart}>Add to Cart</button>
     </div>
   );
@@ -122,7 +125,7 @@ const Cart = ({ cart }) => {
         <div key={product.id}>
           <h3>{product.name}</h3>
           <p>${product.price}</p>
-          {/* Include increase/decrease buttons based on your needs */}
+          <span>Quantity: {product.quantity}</span>
         </div>
       ))}
       <Link to="/">Continue Shopping</Link>
@@ -131,25 +134,3 @@ const Cart = ({ cart }) => {
 };
 
 export default Cart;
-
-/* src/styles.css */
-
-/* Basic styling */
-div {
-  margin: 20px;
-}
-
-/* Button styling */
-button {
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  margin: 5px;
-  cursor: pointer;
-}
-
-/* Hover effect */
-div:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
