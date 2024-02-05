@@ -1,132 +1,88 @@
-// src/App.js
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ProductList from './ProductList';
-import ProductDetails from './ProductDetails';
-import Cart from './Cart';
-import './styles.css';
+import "./App.css";
+import { useState } from 'react';
+import React from "react";
+import {  Route, Routes } from "react-router-dom";
+import Header from "./components/Header_Com/Header";
+import Footer from "./components/Footer_Com/Footer";
+import ProductDetails from "./components/Product_Com/ProductDynamic";
+import ProductList from "./components/Product_Com/ProductList";
+import Cart from "./components/Product_Com/Cart";
+import Home from "./pages/Home";
+import Pages from "./pages/Pages";
+import Products from "./pages/Products";
+import Blog from "./pages/Blog";
+import Shop from "./pages/Shop";
+import Contact from "./pages/Contact Us";
 
+
+// Components
 function App() {
-  const [cart, setCart] = useState([]);
+  const [cartItems, setCartItems] = useState([]); // State for managing cart items
 
-  const handleAddToCart = (product, quantity) => {
-    const existingProduct = cart.find(item => item.id === product.id);
+  // Function to add items to the cart
+  const addToCart = (productId, quantity) => {
+    const existingProductIndex = cartItems.findIndex(item => item.id === productId);
 
-    if (existingProduct) {
-      // If product already exists in cart, update quantity
-      setCart(prevCart =>
-        prevCart.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
-        )
-      );
+    if (existingProductIndex !== -1) {
+      // If the product is already in the cart, update the quantity
+      const updatedCartItems = [...cartItems ];
+      updatedCartItems[existingProductIndex].quantity += quantity;
+      setCartItems(updatedCartItems);
     } else {
-      // If product is not in cart, add it with quantity
-      setCart(prevCart => [...prevCart, { ...product, quantity }]);
+      // If the product is not in the cart, add it
+      const product = { id: productId, name: `Product ${productId}`,price: 20.99, quantity };
+      setCartItems(prevCartItems => [...prevCartItems, product]);
     }
   };
 
-  const handleRemoveFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter(item => item.id !== productId));
-  };
-
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<ProductList onAddToCart={handleAddToCart} />} />
-        <Route path="/product/:id" element={<ProductDetails onAddToCart={handleAddToCart} />} />
-        <Route path="/cart" element={<Cart cart={cart} onRemoveFromCart={handleRemoveFromCart} />} />
-      </Routes>
-    </Router>
+  <div class="App">
+ <header><Header/></header>
+ 
+ <Routes>
+  <Route path='/' element={<Home/>}></Route>
+  <Route path='/Pages' element={<Pages/>}></Route>
+  <Route path='/Products' element={<Products/>}></Route>
+  <Route path='/Shop' element={<Shop/>}></Route>
+  <Route path='/Blog' element={<Blog/>}></Route>
+  <Route path='/Contact us' element={<Contact us/>}></Route>
+
+  <Route
+          path="/"
+          element={<ProductList/>}
+        />
+        <Route
+          path="/product/:productId"
+          element={<ProductDetails addToCart={addToCart} />}
+        />
+        <Route
+          path="/Cart"
+          element={<Cart cartItems={cartItems} />}
+        />
+</Routes>
+
+<footer><Footer/></footer>
+</div>
+
   );
+ 
 }
 
 export default App;
 
-          // src/ProductList.js
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './styles.css';
-
-const ProductList = ({ onAddToCart }) => {
-  const [products] = useState([
-    { id: 1, name: 'Product 1', price: 20.99 },
-    { id: 2, name: 'Product 2', price: 25.99 },
-  ]);
-
-  return (
-    <div>
-      <h2>Product List</h2>
-      {products.map((product) => (
-        <div key={product.id}>
-          <h3>{product.name}</h3>
-          <p>${product.price}</p>
-          <Link to={`/product/${product.id}`}>
-            <button>View Details</button>
-          </Link>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export default ProductList;
-
-
-          // src/ProductDetails.js
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import './styles.css';
-
-const ProductDetails = ({ onAddToCart }) => {
-  const { id } = useParams();
-  const [quantity, setQuantity] = useState(1);
-
-  // Fetch product details based on the 'id' parameter
-  // For simplicity, using static data here
-  const product = {
-    id: parseInt(id),
-    name: `Product ${id}`,
-    price: 20.99,
-  };
-
-  const handleAddToCart = () => {
-    onAddToCart(product, quantity);
-  };
-
-  return (
-    <div>
-      <h2>{product.name}</h2>
-      <p>${product.price}</p>
-      <div>
-        <label>Quantity:</label>
-        <input type="number" value={quantity} onChange={(e) => setQuantity(parseInt(e.target.value))} />
-      </div>
-      <button onClick={handleAddToCart}>Add to Cart</button>
-    </div>
-  );
-};
-
-export default ProductDetails;
-
-
-          // src/Cart.js
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './styles.css';
 
-const Cart = ({ cart, onRemoveFromCart }) => {
+const Cart = ({ cartItems }) => {
   return (
     <div>
       <h2>Shopping Cart</h2>
-      {cart.map((product) => (
-        <div key={product.id}>
-          <h3>{product.name}</h3>
-          <p>${product.price}</p>
-          <p>Quantity: {product.quantity}</p>
-          <button onClick={() => onRemoveFromCart(product.id)}>Remove</button>
-        </div>
-      ))}
-      <Link to="/">Back to Product List</Link>
+      <ul>
+        {cartItems.map(item => (
+          <li key={item.id}>
+            {item.name} - Price: ${item.Price} - Quantity: {item.quantity} -description {item.description}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
