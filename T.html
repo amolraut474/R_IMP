@@ -13,6 +13,28 @@ function App() {
     setCart((prevCart) => [...prevCart, product]);
   };
 
+  const handleRemoveFromCart = (productId) => {
+    setCart((prevCart) => prevCart.filter(item => item.id !== productId));
+  };
+
+  const handleIncreaseQuantity = (productId) => {
+    setCart((prevCart) =>
+      prevCart.map(item =>
+        item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
+  };
+
+  const handleDecreaseQuantity = (productId) => {
+    setCart((prevCart) =>
+      prevCart.map(item =>
+        item.id === productId && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+    );
+  };
+
   return (
     <Router>
       <Switch>
@@ -23,7 +45,12 @@ function App() {
           <SingleProduct onAddToCart={handleAddToCart} />
         </Route>
         <Route path="/cart">
-          <Cart cart={cart} />
+          <Cart
+            cart={cart}
+            onRemoveFromCart={handleRemoveFromCart}
+            onIncreaseQuantity={handleIncreaseQuantity}
+            onDecreaseQuantity={handleDecreaseQuantity}
+          />
         </Route>
       </Switch>
     </Router>
@@ -31,6 +58,7 @@ function App() {
 }
 
 export default App;
+
 // src/ProductList.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -43,20 +71,17 @@ const ProductList = ({ onAddToCart }) => {
     // Add more products as needed
   ]);
 
-  const handleAddToCart = (product) => {
-    onAddToCart(product);
-  };
-
   return (
     <div>
-      <h1>Product List</h1>
+      <h2>Product List</h2>
       {products.map((product) => (
         <div key={product.id}>
-          <Link to={`/product/${product.id}`}>
-            <h3>{product.name}</h3>
-          </Link>
+          <h3>{product.name}</h3>
           <p>${product.price}</p>
-          <button onClick={() => handleAddToCart(product)}>Add to Cart</button>
+          <button onClick={() => onAddToCart(product)}>Add to Cart</button>
+          <Link to={`/product/${product.id}`}>
+            <button>View Details</button>
+          </Link>
         </div>
       ))}
     </div>
@@ -98,7 +123,7 @@ const SingleProduct = ({ onAddToCart }) => {
 
   return (
     <div>
-      <h1>{product.name}</h1>
+      <h2>{product.name}</h2>
       <p>${product.price}</p>
       <div>
         <button onClick={handleIncrease}>+</button>
@@ -114,106 +139,9 @@ export default SingleProduct;
 
 // src/Cart.js
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './styles.css';
 
-const Cart = ({ cart }) => {
-  return (
-    <div>
-      <h1>Shopping Cart</h1>
-      {cart.map((product) => (
-        <div key={product.id}>
-          <h3>{product.name}</h3>
-          <p>${product.price}</p>
-          <span>Quantity: {product.quantity}</span>
-        </div>
-      ))}
-      <Link to="/">Continue Shopping</Link>
-    </div>
-  );
-};
-
-export default Cart;
-// src/App.js
-import React, { useState } from 'react';
-import ProductList from './ProductList';
-import Cart from './Cart';
-import './styles.css';
-
-function App() {
-  const [cart, setCart] = useState([]);
-
-  const handleAddToCart = (product) => {
-    setCart((prevCart) => [...prevCart, product]);
-  };
-
-  return (
-    <div>
-      <h1>React Product Page</h1>
-      <ProductList onAddToCart={handleAddToCart} />
-      <Cart cart={cart} />
-    </div>
-  );
-}
-
-export default App;
-
-        // src/ProductList.js
-import React, { useState } from 'react';
-import './styles.css';
-
-const ProductList = ({ onAddToCart }) => {
-  const [products] = useState([
-    { id: 1, name: 'Product 1', price: 20.99 },
-    { id: 2, name: 'Product 2', price: 25.99 },
-    // Add more products as needed
-  ]);
-
-  const [selectedProduct, setSelectedProduct] = useState(null);
-
-  const handleAddToCart = (product) => {
-    onAddToCart(product);
-  };
-
-  const handleQuickView = (product) => {
-    setSelectedProduct(product);
-  };
-
-  const closeModal = () => {
-    setSelectedProduct(null);
-  };
-
-  return (
-    <div>
-      <h2>Product List</h2>
-      {products.map((product) => (
-        <div key={product.id}>
-          <h3>{product.name}</h3>
-          <p>${product.price}</p>
-          <button onClick={() => handleAddToCart(product)}>Add to Cart</button>
-          <button onClick={() => handleQuickView(product)}>Quick View</button>
-        </div>
-      ))}
-
-      {selectedProduct && (
-        <div className="modal">
-          <h2>{selectedProduct.name}</h2>
-          <p>${selectedProduct.price}</p>
-          <button onClick={() => handleAddToCart(selectedProduct)}>Add to Cart</button>
-          <button onClick={closeModal}>Close</button>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default ProductList;
-        
-        // src/Cart.js
-import React from 'react';
-import './styles.css';
-
-const Cart = ({ cart }) => {
+const Cart = ({ cart, onRemoveFromCart, onIncreaseQuantity, onDecreaseQuantity }) => {
   return (
     <div>
       <h2>Shopping Cart</h2>
@@ -221,6 +149,12 @@ const Cart = ({ cart }) => {
         <div key={product.id}>
           <h3>{product.name}</h3>
           <p>${product.price}</p>
+          <div>
+            <button onClick={() => onRemoveFromCart(product.id)}>Remove</button>
+            <button onClick={() => onIncreaseQuantity(product.id)}>+</button>
+            <span>{product.quantity}</span>
+            <button onClick={() => onDecreaseQuantity(product.id)}>-</button>
+          </div>
         </div>
       ))}
     </div>
@@ -229,37 +163,3 @@ const Cart = ({ cart }) => {
 
 export default Cart;
 
-        /* src/styles.css */
-
-/* Basic styling */
-div {
-  margin: 20px;
-}
-
-/* Modal styling */
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  z-index: 999;
-}
-
-/* Button styling */
-button {
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  margin: 5px;
-  cursor: pointer;
-}
-
-/* Hover effect */
-div:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
