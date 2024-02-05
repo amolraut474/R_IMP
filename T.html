@@ -1,5 +1,5 @@
 // src/App.js
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ProductList from './ProductList';
 import SingleProduct from './SingleProduct';
@@ -7,12 +7,22 @@ import Cart from './Cart';
 import './styles.css';
 
 function App() {
+  const [cart, setCart] = useState([]);
+
+  const handleAddToCart = (product) => {
+    setCart((prevCart) => [...prevCart, product]);
+  };
+
   return (
     <Router>
       <Switch>
-        <Route path="/" exact component={ProductList} />
+        <Route path="/" exact>
+          <ProductList onAddToCart={handleAddToCart} />
+        </Route>
         <Route path="/product/:id" component={SingleProduct} />
-        <Route path="/cart" component={Cart} />
+        <Route path="/cart">
+          <Cart cart={cart} />
+        </Route>
       </Switch>
     </Router>
   );
@@ -20,63 +30,54 @@ function App() {
 
 export default App;
 
-          // src/ProductList.js
+// src/ProductList.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './styles.css';
 
-const ProductList = () => {
-  const [products, setProducts] = useState([
-    { id: 1, name: 'Product 1', price: 20.99, quantity: 0 },
-    { id: 2, name: 'Product 2', price: 25.99, quantity: 0 },
+const ProductList = ({ onAddToCart }) => {
+  const [products] = useState([
+    { id: 1, name: 'Product 1', price: 20.99 },
+    { id: 2, name: 'Product 2', price: 25.99 },
     // Add more products as needed
   ]);
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [hoveredProductId, setHoveredProductId] = useState(null);
 
-  const handleAddToCart = (productId) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product.id === productId ? { ...product, quantity: product.quantity + 1 } : product
-      )
-    );
-  };
-
-  const handleQuickView = (productId) => {
-    setSelectedProduct(products.find((product) => product.id === productId));
+  const handleAddToCart = (product) => {
+    onAddToCart(product);
   };
 
   return (
     <div>
       <h1>Product List</h1>
       {products.map((product) => (
-        <div key={product.id}>
+        <div
+          key={product.id}
+          onMouseEnter={() => setHoveredProductId(product.id)}
+          onMouseLeave={() => setHoveredProductId(null)}
+        >
           <Link to={`/product/${product.id}`}>
             <h3>{product.name}</h3>
           </Link>
           <p>${product.price}</p>
-          <button onClick={() => handleAddToCart(product.id)}>Add to Cart</button>
-          <button onClick={() => handleQuickView(product.id)}>Quick View</button>
+          {hoveredProductId === product.id && (
+            <>
+              <button onClick={() => handleAddToCart(product)}>Add to Cart</button>
+              <Link to={`/product/${product.id}`}>
+                <button>Quick View</button>
+              </Link>
+            </>
+          )}
         </div>
       ))}
-
-      {selectedProduct && (
-        <div className="modal">
-          <h2>{selectedProduct.name}</h2>
-          <p>${selectedProduct.price}</p>
-          <button onClick={() => handleAddToCart(selectedProduct.id)}>Add to Cart</button>
-          <span>Quantity: {selectedProduct.quantity}</span>
-          <button onClick={() => setSelectedProduct(null)}>Close</button>
-        </div>
-      )}
     </div>
   );
 };
 
 export default ProductList;
 
-
-          // src/SingleProduct.js
+// src/SingleProduct.js
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './styles.css';
@@ -94,7 +95,7 @@ const SingleProduct = () => {
   });
 
   const handleAddToCart = () => {
-    setProduct((prevProduct) => ({ ...prevProduct, quantity: prevProduct.quantity + 1 }));
+    // Implement adding to cart functionality
   };
 
   return (
@@ -102,28 +103,26 @@ const SingleProduct = () => {
       <h1>{product.name}</h1>
       <p>${product.price}</p>
       <button onClick={handleAddToCart}>Add to Cart</button>
-      <span>Quantity: {product.quantity}</span>
     </div>
   );
 };
 
 export default SingleProduct;
 
-
-          // src/Cart.js
+// src/Cart.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles.css';
 
-const Cart = ({ products }) => {
+const Cart = ({ cart }) => {
   return (
     <div>
       <h1>Shopping Cart</h1>
-      {products.map((product) => (
+      {cart.map((product) => (
         <div key={product.id}>
           <h3>{product.name}</h3>
           <p>${product.price}</p>
-          <span>Quantity: {product.quantity}</span>
+          {/* Include increase/decrease buttons based on your needs */}
         </div>
       ))}
       <Link to="/">Continue Shopping</Link>
@@ -133,25 +132,11 @@ const Cart = ({ products }) => {
 
 export default Cart;
 
-
-          /* src/styles.css */
+/* src/styles.css */
 
 /* Basic styling */
 div {
   margin: 20px;
-}
-
-/* Modal styling */
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  z-index: 999;
 }
 
 /* Button styling */
@@ -162,4 +147,9 @@ button {
   padding: 8px 12px;
   margin: 5px;
   cursor: pointer;
+}
+
+/* Hover effect */
+div:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
