@@ -2,170 +2,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ProductList from './ProductList';
-import SingleProduct from './SingleProduct';
-import Cart from './Cart';
-import './styles.css';
-
-function App() {
-  const [cart, setCart] = useState([]);
-
-  const handleAddToCart = (product) => {
-    setCart((prevCart) => [...prevCart, product]);
-  };
-
-  const handleRemoveFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter(item => item.id !== productId));
-  };
-
-  const handleIncreaseQuantity = (productId) => {
-    setCart((prevCart) =>
-      prevCart.map(item =>
-        item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
-  };
-
-  const handleDecreaseQuantity = (productId) => {
-    setCart((prevCart) =>
-      prevCart.map(item =>
-        item.id === productId && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
-  };
-
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<ProductList onAddToCart={handleAddToCart} />} />
-        <Route
-          path="/product/:id"
-          element={<SingleProduct onAddToCart={handleAddToCart} />}
-        />
-        <Route
-          path="/cart"
-          element={
-            <Cart
-              cart={cart}
-              onRemoveFromCart={handleRemoveFromCart}
-              onIncreaseQuantity={handleIncreaseQuantity}
-              onDecreaseQuantity={handleDecreaseQuantity}
-            />
-          }
-        />
-      </Routes>
-    </Router>
-  );
-}
-
-export default App;
-
-// src/ProductList.js
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './styles.css';
-
-const ProductList = ({ onAddToCart }) => {
-  const [products] = useState([
-    { id: 1, name: 'Product 1', price: 20.99 },
-    { id: 2, name: 'Product 2', price: 25.99 },
-  ]);
-
-  return (
-    <div>
-      <h2>Product List</h2>
-      {products.map((product) => (
-        <div key={product.id}>
-          <h3>{product.name}</h3>
-          <p>${product.price}</p>
-          <button onClick={() => onAddToCart(product)}>Add to Cart</button>
-          <Link to={`/product/${product.id}`}>
-            <button>View Details</button>
-          </Link>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export default ProductList;
-
-          // src/SingleProduct.js
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import './styles.css';
-
-const SingleProduct = ({ onAddToCart }) => {
-  const { id } = useParams();
-  const [quantity, setQuantity] = useState(1);
-
-  const product = {
-    id: parseInt(id),
-    name: `Product ${id}`,
-    price: 20.99,
-  };
-
-  const handleAddToCart = () => {
-    onAddToCart({ ...product, quantity });
-  };
-
-  const handleIncrease = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
-  };
-
-  const handleDecrease = () => {
-    if (quantity > 1) {
-      setQuantity((prevQuantity) => prevQuantity - 1);
-    }
-  };
-
-  return (
-    <div>
-      <h2>{product.name}</h2>
-      <p>${product.price}</p>
-      <div>
-        <button onClick={handleIncrease}>+</button>
-        <span>{quantity}</span>
-        <button onClick={handleDecrease}>-</button>
-      </div>
-      <button onClick={handleAddToCart}>Add to Cart</button>
-    </div>
-  );
-};
-
-export default SingleProduct;
-          
-// src/Cart.js
-import React from 'react';
-import './styles.css';
-
-const Cart = ({ cart, onRemoveFromCart, onIncreaseQuantity, onDecreaseQuantity }) => {
-  return (
-    <div>
-      <h2>Shopping Cart</h2>
-      {cart.map((product) => (
-        <div key={product.id}>
-          <h3>{product.name}</h3>
-          <p>${product.price}</p>
-          <div>
-            <button onClick={() => onRemoveFromCart(product.id)}>Remove</button>
-            <button onClick={() => onIncreaseQuantity(product.id)}>+</button>
-            <span>{product.quantity}</span>
-            <button onClick={() => onDecreaseQuantity(product.id)}>-</button>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export default Cart;
-          // src/App.js
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ProductList from './ProductList';
-import SingleProduct from './SingleProduct';
+import ProductDetails from './ProductDetails';
 import Cart from './Cart';
 import './styles.css';
 
@@ -196,7 +33,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<ProductList onAddToCart={handleAddToCart} />} />
-        <Route path="/product/:id" element={<SingleProduct onAddToCart={handleAddToCart} />} />
+        <Route path="/product/:id" element={<ProductDetails onAddToCart={handleAddToCart} />} />
         <Route path="/cart" element={<Cart cart={cart} onRemoveFromCart={handleRemoveFromCart} />} />
       </Routes>
     </Router>
@@ -204,8 +41,8 @@ function App() {
 }
 
 export default App;
-          
-// src/ProductList.js
+
+          // src/ProductList.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './styles.css';
@@ -223,7 +60,6 @@ const ProductList = ({ onAddToCart }) => {
         <div key={product.id}>
           <h3>{product.name}</h3>
           <p>${product.price}</p>
-          <button onClick={() => onAddToCart(product, 1)}>Add to Cart</button>
           <Link to={`/product/${product.id}`}>
             <button>View Details</button>
           </Link>
@@ -236,12 +72,12 @@ const ProductList = ({ onAddToCart }) => {
 export default ProductList;
 
 
-          // src/SingleProduct.js
+          // src/ProductDetails.js
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './styles.css';
 
-const SingleProduct = ({ onAddToCart }) => {
+const ProductDetails = ({ onAddToCart }) => {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
 
@@ -270,7 +106,8 @@ const SingleProduct = ({ onAddToCart }) => {
   );
 };
 
-export default SingleProduct;
+export default ProductDetails;
+
 
           // src/Cart.js
 import React from 'react';
