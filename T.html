@@ -56,3 +56,61 @@ const updateQuantity = (productId, newQuantity) => {
 
 // Pass removeFromCart and updateQuantity functions as props to Cart component
 <Route path="/Cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} />} />
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BreadcrumbsProvider, Breadcrumbs, BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
+import Header from './components/Header_Com/Header';
+import Footer from './components/Footer_Com/Footer';
+import ProductDetails from './components/Product_Com/ProductDynamic';
+import ProductList from './components/Product_Com/ProductList';
+import Cart from './components/Product_Com/Cart';
+import Home from './pages/Home';
+import Pages from './pages/Pages';
+import Products from './pages/Products';
+import BlogPage from './pages/Blog';
+import Shop from './pages/Shop';
+import ContactForm from './pages/Contact Us';
+import BlogPost from './components/Blog_Com/Blog';
+
+function App() {
+  return (
+    <Router>
+      <Header />
+
+      <BreadcrumbsProvider>
+        <Breadcrumbs />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/Pages" element={<Pages />} />
+          <Route path="/Products" element={<Products />} />
+          <Route path="/Shop" element={<Shop />} />
+          <Route path="/Blog" element={<BlogPage />} />
+          <Route path="/ContactUs" element={<ContactForm />} />
+          <Route path="/Cart" element={<Cart />} />
+          <Route path="/product/:productId" element={<ProductDetails />} />
+          <Route path="/Blog/:id" element={<BlogPost />} />
+        </Routes>
+      </BreadcrumbsProvider>
+
+      <Footer />
+    </Router>
+  );
+}
+
+export default App;
+        npm install react-breadcrumbs-dynamic
+
+        import React from 'react';
+import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
+
+const Products = () => {
+  return (
+    <div>
+      <BreadcrumbsItem to="/Products">Products</BreadcrumbsItem>
+      <h1>Products Page</h1>
+      {/* Your Products page content */}
+    </div>
+  );
+};
+
+export default Products;
