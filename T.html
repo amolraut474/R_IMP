@@ -137,3 +137,131 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
+
+
+import React from 'react';
+import Newsletter from '../Newsletter-form/Newsletter';
+const Cart = ({ cartItems }) => {
+  return (
+    <>
+    <div class="Shopping-cart">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <h2 class="cart-heading">Shopping <span class="Cart-c">Cart</span></h2>
+            <div class="cart-content"><h3>PRODUCT</h3>
+              <h3>	PRICE</h3>
+              <h3>QUANTITY</h3>
+              <h3>SUBTOTAL</h3>
+            </div>
+            <ul class="P-cart">
+              {cartItems.map(item => (
+                <li key={item.id}>
+                  <div>
+                    <h2>{item.name} </h2>
+                    <h2>Price: ${item.product_price}</h2>
+                    <h2>Quantity: {item.quantity}</h2>
+                    <h2>Quantity: {item.quantity}</h2>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <Newsletter/>
+    </>
+  );
+};
+
+export default Cart;
+
+        import "./App.css";
+import { useState } from 'react';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Header from "./components/Header_Com/Header";
+import Footer from "./components/Footer_Com/Footer";
+import ProductDetails from "./components/Product_Com/ProductDynamic";
+import ProductList from "./components/Product_Com/ProductList";
+import Cart from "./components/Product_Com/Cart";
+import Home from "./pages/Home";
+import Pages from "./pages/Pages";
+import Products from "./pages/Products";
+import BlogPage from "./pages/Blog";
+import Shop from "./pages/Shop";
+import ContactForm from "./pages/Contact Us";
+import BlogPost from "./components/Blog_Com/Blog";
+
+// Components
+function App() {
+  const [cartItems, setCartItems] = useState([]); // State for managing cart items
+
+  // Function to add items to the cart
+  const addToCart = (productId, quantity) => {
+    const existingProductIndex = cartItems.findIndex(item => item.id === productId);
+
+    if (existingProductIndex !== -1) {
+      // If the product is already in the cart, update the quantity
+      const updatedCartItems = [...cartItems];
+      updatedCartItems[existingProductIndex].quantity += quantity;
+      setCartItems(updatedCartItems);
+    } else {
+      // If the product is not in the cart, add it
+      const product = { id: productId, name: `Product ${productId}`, product_price: 20.99, quantity };
+      setCartItems(prevCartItems => [...prevCartItems, product]);
+    }
+  };
+
+  return (
+    <div className="App">
+      <Header />
+
+      <Routes>
+        <Route path='/' element={<Home />}></Route>
+        <Route path='/Pages' element={<Pages />}></Route>
+        <Route path='/Products' element={<Products />}></Route>
+        <Route path='/Shop' element={<Shop />}></Route>
+        <Route path='/Blog' element={<BlogPage />}></Route>
+        <Route path='/Contact us' element={<ContactForm />}></Route>
+
+        <Route
+          path="/"
+          element={<ProductList />}
+        />
+        <Route
+          path="/product/:productId"
+          element={<ProductDetails addToCart={addToCart} />}
+        />
+        <Route
+          path="/Cart"
+          element={<Cart cartItems={cartItems} />}
+        />
+        <Route path="/" element={<BlogPage />} />
+        <Route path="/Blog/:id" element={<BlogPost />} />
+      </Routes>
+
+      <Footer />
+    </div>
+
+  );
+
+}
+
+export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
