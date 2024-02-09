@@ -1,199 +1,106 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './Header.css'; // Import your CSS file for styling
-
-const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+// ProductSlider.js
+import React from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Product from './Product';
+const ProductSlider = ({ products }) => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 768, // Adjust this breakpoint as needed for your design
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
-    <header>
-      <div className="logo">
-        {/* Your logo or site title */}
-      </div>
-      <nav className={isMenuOpen ? "open" : ""}>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/contact">Contact</Link></li>
-        </ul>
-      </nav>
-      <div className="toggle-icon" onClick={toggleMenu}>
-        <i className={isMenuOpen ? "fas fa-times" : "fas fa-bars"}></i>
-      </div>
-    </header>
-  );
-}
-
-export default Header;
-
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Header from './Header';
-import Home from './Home';
-import About from './About';
-import Contact from './Contact';
-
-function App() {
-  return (
-    <Router>
-      <div>
-        <Header />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/contact" component={Contact} />
-        </Switch>
-      </div>
-    </Router>
-  );
-}
-
-export default App;
+    <Slider {...settings}>
+      {products.map((product) => (
+        <Product
+          key={product.id}
+          name={product.name}
+          price={product.product_price}
+          imageUrl={product.imageUrl}
+          
+          
+        />
 
 
-            /* Header styles */
-header {
-  background-color: #333;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-.logo {
-  /* Your logo styles */
-}
-
-nav {
-  display: flex;
-}
-
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-
-nav ul li {
-  margin: 0 20px;
-}
-
-nav ul li a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.toggle-icon {
-  display: none;
-}
-
-/* Media query for smaller screens */
-@media (max-width: 768px) {
-  .toggle-icon {
-    display: block;
-    color: #fff;
-    cursor: pointer;
-  }
-
-  nav {
-    display: none;
-    position: absolute;
-    top: 60px; /* Adjust this value based on your header height */
-    left: 0;
-    background-color: #333;
-    width: 100%;
-    z-index: 999;
-  }
-
-  nav.open {
-    display: block;
-  }
-
-  nav ul {
-    flex-direction: column;
-  }
-
-  nav ul li {
-    margin: 10px 0;
-  }
-}
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-
-const Breadcrumbs = () => {
-  const location = useLocation();
-  const pathnames = location.pathname.split('/').filter((x) => x);
-
-  return (
-    <nav aria-label="breadcrumb">
-      <ol className="breadcrumb">
-        <li className="breadcrumb-item"><Link to="/">Home</Link></li>
-        {pathnames.map((name, index) => {
-          const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
-          const isLast = index === pathnames.length - 1;
-          return (
-            <li key={name} className={`breadcrumb-item ${isLast ? 'active' : ''}`}>
-              {isLast ? (
-                name
-              ) : (
-                <Link to={routeTo}>{name}</Link>
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
+        
+        
+      ))}
+    </Slider>
   );
 };
 
-export default Breadcrumbs;
+export default ProductSlider;
 
-            import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Breadcrumbs from './Breadcrumbs';
-import Home from './Home';
-import About from './About';
-import Contact from './Contact';
 
-const App = () => {
-  return (
-    <Router>
-      <div>
-        <Breadcrumbs />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/contact" component={Contact} />
-        </Switch>
+// ProductList.js
+import React from 'react';
+import ProductSlider from './ProductSlider';
+import './ProductSlider.css'
+const ProductList = ({ products }) => (
+  <div class="container Products-slider-container">
+    <div class="row">
+      <div className="product-list">
+        <ProductSlider products={products} />
+        
       </div>
-    </Router>
+    </div>
+  </div>
+
+
+
+);
+
+export default ProductList;
+
+
+// ProductApp.js
+import React, { useState, useEffect } from 'react';
+import ProductList from './ProductList';
+import ProductDeta from '../Product_Com/ProductDeta';
+
+const ProductApp = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    
+
+    setProducts(ProductDeta);
+  }, []);
+
+  return (
+    <div class="Products-slider-container-main">
+      <h1>Trending Items</h1>
+      <ProductList products={products} />
+      
+    </div>
   );
 };
 
-export default App;
-            ..breadcrumb {
-  background-color: #f5f5f5;
-  padding: 8px 15px;
-  margin: 0;
-  border-radius: 4px;
-}
+export default ProductApp;
 
-.breadcrumb-item + .breadcrumb-item::before {
-  content: '>';
-  padding: 0 5px;
-}
+// Product.js
+import React from 'react';
 
-.breadcrumb-item.active {
-  color: #999;
-}
-            
+const Product = ({ name, description, price, imageUrl }) => (
+  <div className="product">
+    <img src={imageUrl} alt={name} />
+    <h3>{name}</h3>
+    <p>{description}</p>
+    <p>${price}</p>
+  
+  </div>
+);
+export default Product;
