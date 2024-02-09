@@ -161,3 +161,103 @@ const App = () => {
 };
 
 export default App;
+
+
+          // ProductSlider.js
+import React from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Product from './Product';
+import { Link } from 'react-router-dom'; // Import Link from React Router
+
+const ProductSlider = ({ products }) => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
+  return (
+    <Slider {...settings}>
+      {products.map((product) => (
+        <div key={product.id}>
+          <Product
+            name={product.name}
+            price={product.product_price}
+            imageUrl={product.imageUrl}
+          />
+          <Link to={`/product/${product.id}`} className="view-details-button">View Details</Link>
+        </div>
+      ))}
+    </Slider>
+  );
+};
+
+export default ProductSlider;
+
+
+          // ProductList.js
+import React from 'react';
+import ProductSlider from './ProductSlider';
+import './ProductSlider.css';
+
+const ProductList = ({ products }) => (
+  <div className="container Products-slider-container">
+    <div className="row">
+      <div className="product-list">
+        <ProductSlider products={products} />
+      </div>
+    </div>
+  </div>
+);
+
+export default ProductList;
+
+
+          // ProductApp.js
+import React, { useState, useEffect } from 'react';
+import ProductList from './ProductList';
+import ProductData from '../Product_Com/ProductData'; // Assuming ProductData is a JSON array of products
+
+const ProductApp = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    setProducts(ProductData);
+  }, []);
+
+  return (
+    <div className="Products-slider-container-main">
+      <h1>Trending Items</h1>
+      <ProductList products={products} />
+    </div>
+  );
+};
+
+export default ProductApp;
+
+
+          // Product.js
+import React from 'react';
+
+const Product = ({ name, price, imageUrl }) => (
+  <div className="product">
+    <img src={imageUrl} alt={name} />
+    <h3>{name}</h3>
+    <p>${price}</p>
+  </div>
+);
+
+export default Product;
