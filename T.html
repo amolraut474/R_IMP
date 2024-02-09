@@ -53,3 +53,77 @@ function App() {
 }
 
 export default App;
+
+
+            /* Header styles */
+header {
+  background-color: #333;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo {
+  /* Your logo styles */
+}
+
+nav {
+  display: flex;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav ul li {
+  margin: 0 20px;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.toggle-icon {
+  display: none;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .toggle-icon {
+    display: block;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  nav {
+    display: none;
+    position: absolute;
+    top: 60px; /* Adjust this value based on your header height */
+    left: 0;
+    background-color: #333;
+    width: 100%;
+    z-index: 999;
+  }
+
+  nav.open {
+    display: block;
+  }
+
+  nav ul {
+    flex-direction: column;
+  }
+
+  nav ul li {
+    margin: 10px 0;
+  }
+}
