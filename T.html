@@ -127,3 +127,73 @@ nav ul li a {
     margin: 10px 0;
   }
 }
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+
+const Breadcrumbs = () => {
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter((x) => x);
+
+  return (
+    <nav aria-label="breadcrumb">
+      <ol className="breadcrumb">
+        <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+        {pathnames.map((name, index) => {
+          const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
+          const isLast = index === pathnames.length - 1;
+          return (
+            <li key={name} className={`breadcrumb-item ${isLast ? 'active' : ''}`}>
+              {isLast ? (
+                name
+              ) : (
+                <Link to={routeTo}>{name}</Link>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+};
+
+export default Breadcrumbs;
+
+            import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Breadcrumbs from './Breadcrumbs';
+import Home from './Home';
+import About from './About';
+import Contact from './Contact';
+
+const App = () => {
+  return (
+    <Router>
+      <div>
+        <Breadcrumbs />
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/about" component={About} />
+          <Route path="/contact" component={Contact} />
+        </Switch>
+      </div>
+    </Router>
+  );
+};
+
+export default App;
+            ..breadcrumb {
+  background-color: #f5f5f5;
+  padding: 8px 15px;
+  margin: 0;
+  border-radius: 4px;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: '>';
+  padding: 0 5px;
+}
+
+.breadcrumb-item.active {
+  color: #999;
+}
+            
