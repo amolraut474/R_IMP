@@ -104,3 +104,60 @@ const Product = ({ name, description, price, imageUrl }) => (
   </div>
 );
 export default Product;
+
+// Product.js
+import React from 'react';
+import { Link } from 'react-router-dom'; // Import Link from React Router
+
+const Product = ({ id, name, description, price, imageUrl }) => (
+  <div className="product">
+    <img src={imageUrl} alt={name} />
+    <h3>{name}</h3>
+    <p>{description}</p>
+    <p>${price}</p>
+    <Link to={`/product/${id}`} className="btn btn-primary">View Details</Link>
+  </div>
+);
+
+export default Product;
+
+
+// ProductDetails.js
+import React from 'react';
+import { useParams } from 'react-router-dom'; // Import useParams from React Router
+
+const ProductDetails = () => {
+  const { id } = useParams(); // Get the id parameter from the URL
+
+  // Fetch product details based on the id
+
+  return (
+    <div>
+      <h2>Product Details</h2>
+      <p>Product ID: {id}</p>
+      {/* Display other product details here */}
+    </div>
+  );
+};
+
+export default ProductDetails;
+
+
+// App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import ProductApp from './ProductApp';
+import ProductDetails from './ProductDetails'; // Import the ProductDetails component
+
+const App = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/" exact component={ProductApp} />
+        <Route path="/product/:id" component={ProductDetails} />
+      </Switch>
+    </Router>
+  );
+};
+
+export default App;
