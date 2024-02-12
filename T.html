@@ -261,3 +261,38 @@ const Product = ({ name, price, imageUrl }) => (
 );
 
 export default Product;
+
+
+          // Navbar.js
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="logo">Your Logo</div>
+      <div className={`menu-toggle ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
+        {isMenuOpen ? 'Close' : 'Menu'}
+      </div>
+      <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
+        <li>
+          <Link to="/" onClick={toggleMenu}>Home</Link>
+        </li>
+        <li>
+          <Link to="/about" onClick={toggleMenu}>About</Link>
+        </li>
+        <li>
+          <Link to="/contact" onClick={toggleMenu}>Contact</Link>
+        </li>
+      </ul>
+    </nav>
+  );
+}
+
+export default Navbar;
