@@ -1,527 +1,84 @@
-// ProductSlider.js
-import React from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import Product from './Product';
-const ProductSlider = ({ products }) => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 768, // Adjust this breakpoint as needed for your design
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
-
-  return (
-    <Slider {...settings}>
-      {products.map((product) => (
-        <Product
-          key={product.id}
-          name={product.name}
-          price={product.product_price}
-          imageUrl={product.imageUrl}
-          
-          
-        />
-
-
-        
-        
-      ))}
-    </Slider>
-  );
-};
-
-export default ProductSlider;
-
-
 // ProductList.js
-import React from 'react';
-import ProductSlider from './ProductSlider';
-import './ProductSlider.css'
-const ProductList = ({ products }) => (
-  <div class="container Products-slider-container">
-    <div class="row">
-      <div className="product-list">
-        <ProductSlider products={products} />
-        
-      </div>
-    </div>
-  </div>
-
-
-
-);
-
-export default ProductList;
-
-
-// ProductApp.js
-import React, { useState, useEffect } from 'react';
-import ProductList from './ProductList';
-import ProductDeta from '../Product_Com/ProductDeta';
-
-const ProductApp = () => {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    
-
-    setProducts(ProductDeta);
-  }, []);
-
-  return (
-    <div class="Products-slider-container-main">
-      <h1>Trending Items</h1>
-      <ProductList products={products} />
-      
-    </div>
-  );
-};
-
-export default ProductApp;
-
-// Product.js
-import React from 'react';
-
-const Product = ({ name, description, price, imageUrl }) => (
-  <div className="product">
-    <img src={imageUrl} alt={name} />
-    <h3>{name}</h3>
-    <p>{description}</p>
-    <p>${price}</p>
-  
-  </div>
-);
-export default Product;
-
-// Product.js
-import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link from React Router
-
-const Product = ({ id, name, description, price, imageUrl }) => (
-  <div className="product">
-    <img src={imageUrl} alt={name} />
-    <h3>{name}</h3>
-    <p>{description}</p>
-    <p>${price}</p>
-    <Link to={`/product/${id}`} className="btn btn-primary">View Details</Link>
-  </div>
-);
-
-export default Product;
-
-
-// ProductDetails.js
-import React from 'react';
-import { useParams } from 'react-router-dom'; // Import useParams from React Router
-
-const ProductDetails = () => {
-  const { id } = useParams(); // Get the id parameter from the URL
-
-  // Fetch product details based on the id
-
-  return (
-    <div>
-      <h2>Product Details</h2>
-      <p>Product ID: {id}</p>
-      {/* Display other product details here */}
-    </div>
-  );
-};
-
-export default ProductDetails;
-
-
-// App.js
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import ProductApp from './ProductApp';
-import ProductDetails from './ProductDetails'; // Import the ProductDetails component
-
-const App = () => {
-  return (
-    <Router>
-      <Switch>
-        <Route path="/" exact component={ProductApp} />
-        <Route path="/product/:id" component={ProductDetails} />
-      </Switch>
-    </Router>
-  );
-};
-
-export default App;
-
-
-          // ProductSlider.js
-import React from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import Product from './Product';
-import { Link } from 'react-router-dom'; // Import Link from React Router
-
-const ProductSlider = ({ products }) => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
-
-  return (
-    <Slider {...settings}>
-      {products.map((product) => (
-        <div key={product.id}>
-          <Product
-            name={product.name}
-            price={product.product_price}
-            imageUrl={product.imageUrl}
-          />
-          <Link to={`/product/${product.id}`} className="view-details-button">View Details</Link>
-        </div>
-      ))}
-    </Slider>
-  );
-};
-
-export default ProductSlider;
-
-
-          // ProductList.js
-import React from 'react';
-import ProductSlider from './ProductSlider';
-import './ProductSlider.css';
-
-const ProductList = ({ products }) => (
-  <div className="container Products-slider-container">
-    <div className="row">
-      <div className="product-list">
-        <ProductSlider products={products} />
-      </div>
-    </div>
-  </div>
-);
-
-export default ProductList;
-
-
-          // ProductApp.js
-import React, { useState, useEffect } from 'react';
-import ProductList from './ProductList';
-import ProductData from '../Product_Com/ProductData'; // Assuming ProductData is a JSON array of products
-
-const ProductApp = () => {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    setProducts(ProductData);
-  }, []);
-
-  return (
-    <div className="Products-slider-container-main">
-      <h1>Trending Items</h1>
-      <ProductList products={products} />
-    </div>
-  );
-};
-
-export default ProductApp;
-
-
-          // Product.js
-import React from 'react';
-
-const Product = ({ name, price, imageUrl }) => (
-  <div className="product">
-    <img src={imageUrl} alt={name} />
-    <h3>{name}</h3>
-    <p>${price}</p>
-  </div>
-);
-
-export default Product;
-
-
-          // Navbar.js
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
-function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  return (
-    <nav className="navbar">
-      <div className="logo">Your Logo</div>
-      <div className={`menu-toggle ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
-        {isMenuOpen ? 'Close' : 'Menu'}
-      </div>
-      <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
-        <li>
-          <Link to="/" onClick={toggleMenu}>Home</Link>
-        </li>
-        <li>
-          <Link to="/about" onClick={toggleMenu}>About</Link>
-        </li>
-        <li>
-          <Link to="/contact" onClick={toggleMenu}>Contact</Link>
-        </li>
-      </ul>
-    </nav>
-  );
-}
-
-export default Navbar;
-
-
-          /* Navbar.css */
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #333;
-  color: white;
-  padding: 10px 20px;
-}
-
-.logo {
-  font-size: 24px;
-}
-
-.menu-toggle {
-  cursor: pointer;
-  display: none;
-}
-
-.nav-links {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-}
-
-.nav-links li {
-  margin-right: 20px;
-}
-
-.nav-links li:last-child {
-  margin-right: 0;
-}
-
-.nav-links a {
-  color: white;
-  text-decoration: none;
-}
-
-/* Media query for mobile */
-@media only screen and (max-width: 768px) {
-  .menu-toggle {
-    display: block;
-  }
-
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    background-color: #333;
-    padding: 10px 20px;
-    flex-direction: column;
-  }
-
-  .nav-links.active {
-    display: flex;
-  }
-
-  .menu-toggle.active {
-    color: #fff;
-  }
-}
-
-          // ProductList.js
-import React, { useState } from 'react';
 import './ProductList.css';
 
-const productList = [
-  { id: 1, name: 'Product 1', price: 10 },
-  { id: 2, name: 'Product 2', price: 20 },
-  { id: 3, name: 'Product 3', price: 30 },
-];
-
 function ProductList() {
-  const [cart, setCart] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
 
   const addToCart = (product) => {
-    setCart([...cart, product]);
+    setCartItems([...cartItems, product]);
   };
 
   return (
     <div className="product-list">
-      <h2>Products</h2>
-      {productList.map((product) => (
-        <div className="product" key={product.id}>
-          <h3>{product.name}</h3>
-          <p>${product.price}</p>
-          <button onClick={() => addToCart(product)}>Add to Cart</button>
-        </div>
-      ))}
+      <h2>Product List</h2>
+      <div className="products">
+        <Product id={1} name="Product 1" price={10} addToCart={addToCart} />
+        <Product id={2} name="Product 2" price={20} addToCart={addToCart} />
+        <Product id={3} name="Product 3" price={30} addToCart={addToCart} />
+      </div>
+      <Link to="/cart">Go to Cart</Link> {/* Link to the Cart page */}
     </div>
   );
 }
 
 export default ProductList;
 
-          /* ProductList.css */
-.product-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin-top: 20px;
-}
 
-.product {
-  width: 200px;
-  padding: 20px;
-  margin: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  text-align: center;
-}
+          // ProductList.js
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import Product from './Product';
+import './ProductList.css';
 
-.product:hover {
-  background-color: #f0f0f0;
-}
+function ProductList() {
+  const [cartItems, setCartItems] = useState([]);
 
-button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-import "./App.css";
-import { useState } from 'react';
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-// React Pages
-import Home from "./pages/Home";
-import Pages from "./pages/Pages";
-import Products from "./pages/Products";
-import BlogPage from "./pages/Blog";
-import Shop from "./pages/Shop";
-import Contact from "./pages/Contact";
-import BlogPost from "./components/Blog_Com/Blog";
-
-// react Components
-import Header from "./components/Header_Com/Header";
-import Footer from "./components/Footer_Com/Footer";
-import ProductDetails from "./components/Product_Com/ProductDynamic";
-import ProductList from "./components/Product_Com/ProductList";
-import Cart from "./components/Product_Com/Cart";
-
-
-function App() {
-  const [cartItems, setCartItems] = useState([]); // State for managing cart items
-
-  // Function to add items to the cart
-  const addToCart = (productId, quantity) => {
-    const existingProductIndex = cartItems.findIndex(item => item.id === productId);
-
-    if (existingProductIndex !== -1) {
-      // If the product is already in the cart, update the quantity
-      const updatedCartItems = [...cartItems];
-      updatedCartItems[existingProductIndex].quantity += quantity;
-      setCartItems(updatedCartItems);
-    } else {
-      // If the product is not in the cart, add it
-      const product = { id: productId, name: `Product ${productId}`, product_price: 20.99, quantity };
-      setCartItems(prevCartItems => [...prevCartItems, product]);
-    }
-
-  };
-  // Function to remove items from the cart
-  const removeFromCart = (productId) => {
-    const updatedCartItems = cartItems.filter(item => item.id !== productId);
-    setCartItems(updatedCartItems);
-  };
-
-  // Function to update quantity of items in the cart
-  const updateQuantity = (productId, newQuantity) => {
-    const updatedCartItems = cartItems.map(item => {
-      if (item.id === productId) {
-        return { ...item, quantity: newQuantity };
-      }
-      return item;
-    });
-    setCartItems(updatedCartItems);
+  const addToCart = (product) => {
+    setCartItems([...cartItems, product]);
   };
 
   return (
-    <div className="App">
-      <Header />
-      <Routes>
-        <Route path='/Header' element={<Header />}></Route>
-        <Route path='/' element={<Home />}></Route>
-        <Route path='/Pages' element={<Pages />}></Route>
-        <Route path='/Products' element={<Products />}></Route>
-        <Route path='/Shop' element={<Shop />}></Route>
-        <Route path='/Blog' element={<BlogPage />}></Route>
-        <Route path='/Contact' element={<Contact />}></Route>
-
-        <Route
-          path="/"
-          element={<ProductList />}
-        />
-        <Route
-          path="/product/:productId"
-          element={<ProductDetails addToCart={addToCart} />}
-        />
-        <Route
-          path="/Cart"
-          element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} />}
-        />
-        <Route path="/" element={<BlogPage />} />
-        <Route path="/Blog/:id" element={<BlogPost />} />
-      </Routes>
-
-      <Footer />
+    <div className="product-list">
+      <h2>Product List</h2>
+      <div className="products">
+        <Product id={1} name="Product 1" price={10} addToCart={addToCart} />
+        <Product id={2} name="Product 2" price={20} addToCart={addToCart} />
+        <Product id={3} name="Product 3" price={30} addToCart={addToCart} />
+      </div>
+      <Link to="/cart">Go to Cart</Link> {/* Link to the Cart page */}
     </div>
-
   );
+}
 
+export default ProductList;
+
+
+
+// App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import ProductList from './pages/ProductList'; // Assuming you have a ProductList page component
+
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<ProductList />} /> {/* Add route for ProductList */}
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
+  );
 }
 
 export default App;
-
+          
