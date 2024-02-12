@@ -1,25 +1,33 @@
+// productsData.js
+const products = [
+  { id: 1, name: "Product 1", price: 10 },
+  { id: 2, name: "Product 2", price: 20 },
+  { id: 3, name: "Product 3", price: 30 },
+];
+
+export default products;
+
+
 // ProductList.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import Product from './Product';
-import './ProductList.css';
+import products from '../data/productsData';
 
 function ProductList() {
-  const [cartItems, setCartItems] = useState([]);
+  const [cart, setCart] = useState([]);
 
   const addToCart = (product) => {
-    setCartItems([...cartItems, product]);
+    setCart([...cart, product]);
   };
 
   return (
     <div className="product-list">
       <h2>Product List</h2>
       <div className="products">
-        <Product id={1} name="Product 1" price={10} addToCart={addToCart} />
-        <Product id={2} name="Product 2" price={20} addToCart={addToCart} />
-        <Product id={3} name="Product 3" price={30} addToCart={addToCart} />
+        {products.map((product) => (
+          <Product key={product.id} product={product} addToCart={addToCart} />
+        ))}
       </div>
-      <Link to="/cart">Go to Cart</Link> {/* Link to the Cart page */}
     </div>
   );
 }
@@ -27,58 +35,62 @@ function ProductList() {
 export default ProductList;
 
 
-          // ProductList.js
+
+// Product.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
-import Product from './Product';
-import './ProductList.css';
 
-function ProductList() {
-  const [cartItems, setCartItems] = useState([]);
+function Product({ product, addToCart }) {
+  const [isHovered, setIsHovered] = useState(false);
 
-  const addToCart = (product) => {
-    setCartItems([...cartItems, product]);
+  const handleAddToCart = () => {
+    addToCart(product);
   };
 
   return (
-    <div className="product-list">
-      <h2>Product List</h2>
-      <div className="products">
-        <Product id={1} name="Product 1" price={10} addToCart={addToCart} />
-        <Product id={2} name="Product 2" price={20} addToCart={addToCart} />
-        <Product id={3} name="Product 3" price={30} addToCart={addToCart} />
-      </div>
-      <Link to="/cart">Go to Cart</Link> {/* Link to the Cart page */}
+    <div className="product" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+      <h3>{product.name}</h3>
+      <p>${product.price}</p>
+      {isHovered && <button onClick={handleAddToCart}>Add to Cart</button>}
     </div>
   );
 }
 
-export default ProductList;
+export default Product;
 
+
+// ShoppingCart.js
+import React from 'react';
+
+function ShoppingCart({ cart }) {
+  return (
+    <div className="shopping-cart">
+      <h2>Shopping Cart</h2>
+      <ul>
+        {cart.map((item, index) => (
+          <li key={index}>{item.name} - ${item.price}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default ShoppingCart;
 
 
 // App.js
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import ProductList from './pages/ProductList'; // Assuming you have a ProductList page component
+import React, { useState } from 'react';
+import ProductList from './components/ProductList';
+import ShoppingCart from './components/ShoppingCart';
 
 function App() {
+  const [cart, setCart] = useState([]);
+
   return (
-    <Router>
-      <div className="App">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<ProductList />} /> {/* Add route for ProductList */}
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
+    <div className="App">
+      <ProductList addToCart={setCart} />
+      <ShoppingCart cart={cart} />
+    </div>
   );
 }
 
 export default App;
-          
