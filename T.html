@@ -323,3 +323,129 @@ function App() {
 
 export default App;
 
+
+
+
+        new code 
+
+
+
+        // ProductList.js
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './Products.css';
+import products from './ProductDeta';
+import Product from './Product';
+
+const ProductList = ({ addToCart }) => {
+  return (
+    <div className="product-list-section">
+      <div className='container'>
+        <div className="row">
+          <ul>
+            {products.map((product) => (
+              <li key={product.id}>
+                <Product product={product} addToCart={addToCart} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductList;
+
+
+        // Product.js
+import React, { useState } from 'react';
+
+function Product({ product, addToCart }) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleAddToCart = () => {
+    addToCart(product.id, 1); // Add one item to the cart
+  };
+
+  return (
+    <div className="product" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+      <img src={product.imageUrl} alt={product.name} />
+      <h3>{product.name}</h3>
+      <p>${product.product_price}</p>
+      {isHovered && <button onClick={handleAddToCart}>Add to Cart</button>}
+    </div>
+  );
+}
+
+export default Product;
+
+
+        // ProductDetails.js
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import products from './ProductDeta';
+
+const ProductDetails = ({ addToCart }) => {
+  const { productId } = useParams();
+  const [quantity, setQuantity] = useState(1);
+
+  const product = products.find(product => product.id === parseInt(productId, 10));
+
+  if (!product) {
+    return <div>Product not found</div>;
+  }
+
+  const increaseQuantity = () => {
+    setQuantity(prevQuantity => prevQuantity + 1);
+  };
+
+  const decreaseQuantity = () => {
+    setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  };
+
+  const handleAddToCart = () => {
+    addToCart(productId, quantity);
+  };
+
+  return (
+    <div className='Single-product-page'>
+      {/* Product details rendering code */}
+      <div className='Quantity-btn'>
+        <button onClick={decreaseQuantity}>-</button>
+        <span>{quantity}</span>
+        <button onClick={increaseQuantity}>+</button>
+        <button onClick={handleAddToCart}>Add to Cart</button>
+      </div>
+    </div>
+  );
+};
+
+export default ProductDetails;
+
+
+        // Cart.js
+import React from 'react';
+
+const Cart = ({ cartItems }) => {
+  return (
+    <div className='Shopping-cart'>
+      <h2>Shopping Cart</h2>
+      <ul>
+        {cartItems.map(item => (
+          <li key={item.id}>
+            <img src={item.imageUrl} alt={item.name} />
+            <div>
+              <h3>{item.name}</h3>
+              <p>${item.product_price}</p>
+              <p>Quantity: {item.quantity}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Cart;
+
