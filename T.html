@@ -363,3 +363,71 @@ export default Navbar;
     color: #fff;
   }
 }
+
+          // ProductList.js
+import React, { useState } from 'react';
+import './ProductList.css';
+
+const productList = [
+  { id: 1, name: 'Product 1', price: 10 },
+  { id: 2, name: 'Product 2', price: 20 },
+  { id: 3, name: 'Product 3', price: 30 },
+];
+
+function ProductList() {
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+  };
+
+  return (
+    <div className="product-list">
+      <h2>Products</h2>
+      {productList.map((product) => (
+        <div className="product" key={product.id}>
+          <h3>{product.name}</h3>
+          <p>${product.price}</p>
+          <button onClick={() => addToCart(product)}>Add to Cart</button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default ProductList;
+
+          /* ProductList.css */
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.product {
+  width: 200px;
+  padding: 20px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.product:hover {
+  background-color: #f0f0f0;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
