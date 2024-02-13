@@ -375,3 +375,33 @@ function App() {
 
 export default App;
 
+
+          .// ProductList.js
+import React from 'react';
+import { Link } from 'react-router-dom';
+import products from './products'; // Import your products data
+
+const ProductList = ({ addToCart }) => {
+  return (
+    <div className="product-list-section">
+      <div className='container'>
+        <div className="row">
+          <ul>
+            {products.map((product) => (
+              <li key={product.id}>
+                <img src={product.imageUrl} alt={product.name} />
+                <h2>{product.name}</h2>
+                <h2 className='price'>{product.product_price}</h2>
+                <button onClick={() => addToCart(product.id, 1)}>Add to Cart</button>
+                <Link to={`/product/${product.id}`}>View Details</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductList;
+
