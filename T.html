@@ -404,4 +404,60 @@ const ProductList = ({ addToCart }) => {
 };
 
 export default ProductList;
+// App.js
+import React, { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Header from './components/Header_Com/Header';
+import Footer from './components/Footer_Com/Footer';
+import ProductList from './components/Product_Com/ProductList';
+import ProductDetails from './components/Product_Com/ProductDynamic';
+import Cart from './components/Product_Com/Cart';
+import products from './components/Product_Com/products';
 
+function App() {
+  const [cartItems, setCartItems] = useState([]);
+
+  const addToCart = (productId, quantity) => {
+    const existingItem = cartItems.find(item => item.id === productId);
+
+    if (existingItem) {
+      // If the item is already in the cart, update its quantity
+      setCartItems(prevCartItems =>
+        prevCartItems.map(item =>
+          item.id === productId ? { ...item, quantity: item.quantity + quantity } : item
+        )
+      );
+    } else {
+      // If the item is not in the cart, add it
+      const productToAdd = products.find(product => product.id === productId);
+      setCartItems(prevCartItems => [...prevCartItems, { ...productToAdd, quantity }]);
+    }
+  };
+
+  const removeFromCart = (productId) => {
+    setCartItems(prevCartItems => prevCartItems.filter(item => item.id !== productId));
+  };
+
+  const updateQuantity = (productId, newQuantity) => {
+    setCartItems(prevCartItems =>
+      prevCartItems.map(item =>
+        item.id === productId ? { ...item, quantity: newQuantity } : item
+      )
+    );
+  };
+
+  return (
+    <div className="App">
+      <Header />
+      <Routes>
+        <Route path="/" element={<ProductList addToCart={addToCart} />} />
+        <Route path="/product/:productId" element={<ProductDetails addToCart={addToCart} />} />
+        <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} />} />
+      </Routes>
+      <Footer />
+    </div>
+  );
+}
+
+export default App;
+          
