@@ -460,4 +460,37 @@ function App() {
 }
 
 export default App;
+          import React, { useState } from 'react';
+import './Header.css'; // import your header styles
+
+const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  return (
+    <header>
+      <div className="logo">Your Logo</div>
+      <div className={`menu ${isMenuOpen ? 'open' : ''}`}>
+        <ul>
+          <li>Menu Item 1</li>
+          <li>Menu Item 2</li>
+          <li>Menu Item 3</li>
+          {/* Add more menu items as needed */}
+        </ul>
+      </div>
+      <div className="menu-toggle" onClick={toggleMenu}>
+        {isMenuOpen ? (
+          <img src="close_icon.svg" alt="Close Icon" />
+        ) : (
+          <img src="menu_icon.svg" alt="Menu Icon" />
+        )}
+      </div>
+    </header>
+  );
+};
+
+export default Header;
           
