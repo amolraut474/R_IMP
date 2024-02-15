@@ -493,4 +493,89 @@ const Header = () => {
 };
 
 export default Header;
-          
+
+
+          import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './Header.css'; // Import your CSS file for styling
+const Header = () => {
+const [isMenuOpen, setIsMenuOpen] = useState(false);
+const toggleMenu = () => {
+setIsMenuOpen(!isMenuOpen);
+};
+return (
+<>
+<header className='header-fixed'>
+   <section class="Announcement-bar">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-6 col-sm-12 col-md-12 d-flex align-items-center gap-2 Ann-col-mobile">
+               <h2 class="Ann-icon"><span><i class="bi bi-translate"></i></span>English   <i class="bi bi-chevron-down"></i> </h2>
+               <h2 class="Ann-icon">USD <span><i class="bi bi-chevron-down"></i></span>   </h2>
+               <h2 class="Ann-icon"><span><i class="bi bi-phone"></i></span>123-456-7890</h2>
+            </div>
+            <div class="col-lg-6 col-sm-12 col-md-12 d-flex align-items-center justify-content-end gap-2 Ann-col-mobile">
+               <h2 class="Ann-icon"><span><i class="bi bi-shuffle"></i></span>Compare</h2>
+               <h2 class="Ann-icon"><span><i class="bi bi-heart"></i></span>Wishlist</h2>
+               <h2 class="Ann-icon"><span><i class="bi bi-person-add"></i></span>Login</h2>
+            </div>
+         </div>
+      </div>
+   </section>
+   <section className='Header-section-part'>
+      <div className='container'>
+        <div className='custom-header'>
+         <div className="logo">
+            <img src='https://bestwebcreator.com/shopwise/demo/assets/images/logo_dark.png' alt='name' />
+            {/* Your logo or site title */}
+         </div>
+         <nav className={isMenuOpen ? "open" : ""}>
+         <ul>
+            <li>
+               <Link to="/">
+               Home</Link>
+            </li>
+            <li>
+               <Link to="/About">
+               About</Link>
+            </li>
+            <li>
+               <Link to="/contact">
+               Contact</Link>
+            </li>
+            <li>
+               <Link to="/contact">
+               Contact</Link>
+            </li>
+            <li>
+               <Link to="/contact">
+               Contact</Link>
+            </li>
+            <li>
+               <Link to="/contact">
+               Contact</Link>
+            </li>
+         </ul>
+         </nav>
+         <div class="icon-box">
+         <h2><i class="bi bi-search"></i></h2>
+         <Link to="/cart" class="cart-link"> <h2><i class="bi bi-cart3"></i></h2></Link>
+        
+      </div>
+
+         <div className="toggle-icon" onClick={toggleMenu}>
+            <i className={isMenuOpen ? "bi bi-list" : "bi bi-list"}></i>
+         </div>
+         <div class="icon-box">
+         <h2><i class="bi bi-search"></i></h2>
+         <Link to="/cart" class="cart-link"> <h2><i class="bi bi-cart3"></i></h2></Link>
+        
+      </div>
+      </div>
+      </div>
+   </section>
+</header>
+</>
+);
+}
+export default Header;
