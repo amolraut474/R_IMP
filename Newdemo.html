@@ -378,3 +378,39 @@ function App() {
 export default App;
 
 
+
+          // ProductList.js
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './Products.css';
+import products from './ProductDeta';
+
+const ProductList = ({ addToCart }) => {
+  const handleAddToCart = (productId) => {
+    addToCart(productId, 1); // Assuming you always add one quantity at a time
+  };
+
+  return (
+    <div className="product-list-section">
+      <div className='container'>
+        <div className="row">
+          <ul>
+            {products.map((product) => (
+              <li key={product.id}>
+                <img src={product.imageUrl} alt={product.name} />
+                <h2>{product.name}</h2>
+                <h2 className='price'>{product.product_price}</h2>
+                <button onClick={() => handleAddToCart(product.id)}>Add to Cart</button>
+                <Link to={`/product/${product.id}`}>View Details</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductList;
+
+
