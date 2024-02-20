@@ -419,3 +419,59 @@ export default ProductList;
 />
 
 
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Header from "./components/Header_Com/Header";
+import Footer from "./components/Footer_Com/Footer";
+import ProductList from "./components/Product_Com/ProductList";
+import ProductDetails from "./components/Product_Com/ProductDynamic";
+import Cart from "./components/Product_Com/Cart";
+
+function App() {
+  const [cartItems, setCartItems] = useState([]);
+
+  const addToCart = (productId, quantity) => {
+    const existingProductIndex = cartItems.findIndex(item => item.id === productId);
+
+    if (existingProductIndex !== -1) {
+      const updatedCartItems = [...cartItems];
+      updatedCartItems[existingProductIndex].quantity += quantity;
+      setCartItems(updatedCartItems);
+    } else {
+      const product = { id: productId, name: `Product ${productId}`, product_price: 20.99, quantity };
+      setCartItems(prevCartItems => [...prevCartItems, product]);
+    }
+  };
+
+  const removeFromCart = (productId) => {
+    const updatedCartItems = cartItems.filter(item => item.id !== productId);
+    setCartItems(updatedCartItems);
+  };
+
+  const updateQuantity = (productId, newQuantity) => {
+    const updatedCartItems = cartItems.map(item => {
+      if (item.id === productId) {
+        return { ...item, quantity: newQuantity };
+      }
+      return item;
+    });
+    setCartItems(updatedCartItems);
+  };
+
+  return (
+    <div className="App">
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<ProductList addToCart={addToCart} />} />
+          <Route path="/product/:productId" element={<ProductDetails addToCart={addToCart} />} />
+          <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} />} />
+        </Routes>
+        <Footer />
+      </Router>
+    </div>
+  );
+}
+
+export default App;
+          
