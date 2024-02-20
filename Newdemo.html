@@ -1,278 +1,51 @@
-import React, { useState } from 'react';
-import Newsletter from '../Newsletter-form/Newsletter';
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-
-const Cart = ({ cartItems, removeFromCart, updateQuantity }) => {
-  const [checkoutInfo, setCheckoutInfo] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: ''
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCheckoutInfo(prevInfo => ({ ...prevInfo, [name]: value }));
-  };
-
-  const handleCheckout = () => {
-    // Implement checkout process here, e.g., send order to server, process payment, etc.
-    // You can use checkoutInfo object to gather shipping information
-    // Once the checkout process is complete, you can clear the cartItems state or perform other actions
-    alert('Checkout process completed!');
-    // Clear the cartItems state
-    // setCartItems([]);
-  };
-
-  const calculateTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + (item.product_price * item.quantity), 0);
-  };
-
-  return (
-    <>
-      <div className='Bread-crumb-section'>
-        <div className="container">
-          <div className='Bread-crumb'>
-            <div className='Bread-crumb-head'>
-              <h3 class="section-4-heading">Shopping <span class="Cart-c"> Cart</span> </h3>
-            </div>
-            <div className='Bread-crumb-tab'>
-              <Breadcrumbs />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="Shopping-cart">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <div className='mobile-cart'>
-                <div class="cart-content">
-                  <h3>PRODUCT</h3>
-                  <h3>PRICE</h3>
-                  <h3>QUANTITY</h3>
-                  <h3>SUBTOTAL</h3>
-                  <h3>REMOVE</h3>
-                </div>
-                <ul class="P-cart">
-                  {cartItems.map(item => (
-                    <li key={item.id}>
-                      <div className='cart-main-container '>
-                        <div>
-                          <h2>{item.name}</h2>
-                        </div>
-                        <div><h2>Price: ${item.product_price}</h2></div>
-                        <div className='Quantity-btn-cart'>
-                          <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
-                          {item.quantity}
-                          <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
-                        </div>
-                        <div><h2>Subtotal: ${(item.product_price * item.quantity).toFixed(2)}</h2></div>
-                        <div> <button onClick={() => removeFromCart(item.id)} className='cancel-btn'><i class="fa-solid fa-xmark"></i></button></div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className='cart-form-section'>
-      <div className='container'>
-        <div className='cart-form'>
-          <h3>Cart Totals</h3>
-          <input type="text" name="firstName" value={checkoutInfo.firstName} onChange={handleInputChange} placeholder="First Name" />
-          <input type="text" name="lastName" value={checkoutInfo.firstName} onChange={handleInputChange} placeholder="lastName" />
-          <input type="text" name="email" value={checkoutInfo.firstName} onChange={handleInputChange} placeholder="email" />
-          <input type="text" name="address" value={checkoutInfo.firstName} onChange={handleInputChange} placeholder="address" />
-          <input type="text" name="city" value={checkoutInfo.firstName} onChange={handleInputChange} placeholder="city" />
-          <input type="text" name="postalCode" value={checkoutInfo.firstName} onChange={handleInputChange} placeholder="postalCode" />
-          <input type="text" name="country" value={checkoutInfo.firstName} onChange={handleInputChange} placeholder="country" />
-          {/* Add more input fields for shipping information (e.g., lastName, email, address, city, postalCode, country) */}
-        </div>
-        <div className='cart-p'>Total Price: ${calculateTotalPrice().toFixed(2)}</div>
-        <button onClick={handleCheckout} className='checkout-btn'>Checkout</button>
-      </div>
-      </div>
-      <Newsletter />
-    </>
-  );
-};
-
-export default Cart;
-
-
-
-// products.js
-const products = [
-    {
-        id: 1, name: 'Product 1', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.',
-        imageUrl: 'https://bestwebcreator.com/shopwise/demo/assets/images/furniture_img1.jpg', product_price:'68.00',SKU:'BE45VGRT',Category:'Furniture, Table',Tags:'Pottery',
-    },
-    {
-        id: 2, name: 'Product 2', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.',
-        imageUrl: 'https://bestwebcreator.com/shopwise/demo/assets/images/furniture_img2.jpg', product_price: '68.00',SKU:'BE45VGRT',Category:'Furniture, Table',Tags:'Pottery',
-    },
-    {
-        id: 3, name: 'Product 3', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.',
-        imageUrl: 'https://bestwebcreator.com/shopwise/demo/assets/images/furniture_img3.jpg', product_price: '68.00',SKU:'BE45VGRT',Category:'Furniture, Table',Tags:'Pottery',
-    },
-    {
-        id: 4, name: 'Product 4', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.',
-        imageUrl: 'https://bestwebcreator.com/shopwise/demo/assets/images/furniture_img4.jpg', product_price: '68.00',SKU:'BE45VGRT',Category:'Furniture, Table',Tags:'Pottery',
-    },
-    {
-        id: 5, name: 'Product 5', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.',
-        imageUrl: 'https://bestwebcreator.com/shopwise/demo/assets/images/furniture_img5.jpg', product_price: '68.00',SKU:'BE45VGRT',Category:'Furniture, Table',Tags:'Pottery',
-    },
-    {
-        id: 6, name: 'Product 6', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.',
-        imageUrl: 'https://bestwebcreator.com/shopwise/demo/assets/images/furniture_img6.jpg', product_price: '68.00',SKU:'BE45VGRT',Category:'Furniture, Table',Tags:'Pottery',
-    },
-    {
-        id: 7, name: 'Product 7', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.',
-        imageUrl: 'https://bestwebcreator.com/shopwise/demo/assets/images/furniture_img7.jpg', product_price: '68.00',SKU:'BE45VGRT',Category:'Furniture, Table',Tags:'Pottery',
-    },
-    {
-        id: 8, name: 'Product 8', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.',
-        imageUrl: 'https://bestwebcreator.com/shopwise/demo/assets/images/furniture_img8.jpg', product_price: '68.00',SKU:'BE45VGRT',Category:'Furniture, Table',Tags:'Pottery',
-    },
-    // Add more products as needed
-];
-
-export default products;
-
-
-import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import products from './ProductDeta';
-import Newsletter from '../Newsletter-form/Newsletter';
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-const ProductDetails = ({ addToCart }) => {
-  const { productId } = useParams();
-  const [quantity, setQuantity] = useState(1);
-
-  // Assuming products is your data source
-  const product = products.find(product => product.id === parseInt(productId, 10));
-
-  if (!product) {
-    // Handle product not found
-    return <div>Product not found</div>;
-  }
-
-  const increaseQuantity = () => {
-    setQuantity(prevQuantity => prevQuantity + 1);
-  };
-
-  const decreaseQuantity = () => {
-    setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
-  };
-
-  const handleAddToCart = () => {
-    addToCart(productId, quantity);
-  };
-
-  return (
-    <>
-    <div className='Bread-crumb-section'>
-        <div className="container">
-          <div className='Bread-crumb'>
-            <div className='Bread-crumb-head'>
-            <h3 class="section-4-heading"> Blog <span class="Cart-c"> List</span> </h3>
-            </div>
-            <div className='Bread-crumb-tab'>
-              <Breadcrumbs />
-            </div>
-          </div>
-        </div>
-      </div>
-    <div class="Single-product-page">
-      <div class="container">
-        <div class="row     justify-content-center">
-          <div class="col-lg-5">
-            <div> <img src={product.imageUrl} alt={product.name} /></div>
-
-          </div>
-          <div class="col-lg-5 text-start p-part-contant">
-            <h2 class="p-name">{product.name}</h2>
-            <h2 class='price'>{product.product_price}</h2>
-            <p class="p-disc ">{product.description}</p>
-
-            <div class="Category">
-              <p><span>SKU:</span>{product.SKU}</p>
-              <p><span>Category:</span>{product.Category}</p>
-              <p><span>Tags:</span>{product.Tags}</p>
-            </div>
-
-            <div class="Quantity-btn">
-             <span>Quantity:</span> 
-              <button onClick={decreaseQuantity}>-</button>
-              <span>{quantity}</span>
-              <button onClick={increaseQuantity}>+</button>
-            </div>
-            <div class="Add-to-cart"><button onClick={handleAddToCart}>Add to Cart</button></div>
-           
-
-
-
-            <Link to="/cart" class="cart-link">View Cart</Link>
-
-
-          </div>
-
-        </div>
-      </div>
-
-     
-    </div >
-    <Newsletter/>
-    </>
-  
-  );
-};
-
-export default ProductDetails;
-
-
 // ProductList.js
-import React from 'react';
+
 import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import './Products.css'
 import products from './ProductDeta';
 
-const ProductList = ({ addToCart }) => {
+const ProductList = () => {
+  const [cart, setCart] = useState([]);
+  const [notification, setNotification] = useState(null);
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+    setNotification(`${product.name} added to cart`);
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000); // Hide notification after 3 seconds
+  };
   return (
     <div class="product-list-section">
       {/* <h2>Products List</h2> */}
       <div class='container'>
         <div class="row">
-        <ul>
-        {products.map((product) => (
-          <li key={product.id}>
-            
-             <img src={product.imageUrl} alt={product.name}/>{product.name}<h2 class='price'>{product.product_price}</h2>
-            {/* <button onClick={() => addToCart(product.id, 1)}>Add to Cart</button> */}
-            <Link to={`/product/${product.id}`}>View Details</Link>
-           
-            
-          </li>
-          
-        ))}
-         {/* <Link to="/cart">View Cart</Link> */}
-      </ul>
+          <ul>
+            {products.map((product) => (
+              <li key={product.id}>
+
+                <img src={product.imageUrl} alt={product.name} />{product.name}<h2 class='price'>{product.product_price}</h2>
+                <button onClick={() => addToCart(product)}>Add to Cart</button>
+                <Link to={`/product/${product.id}`}>View Details</Link>
+
+
+              </li>
+
+            ))}
+            {/* <Link to="/cart">View Cart</Link> */}
+          </ul>
+          {notification && <div>{notification}</div>}
         </div>
       </div>
-      
+
     </div>
   );
 };
 
 export default ProductList;
+
+
 
 
 
@@ -377,101 +150,3 @@ function App() {
 
 export default App;
 
-
-
-          // ProductList.js
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './Products.css';
-import products from './ProductDeta';
-
-const ProductList = ({ addToCart }) => {
-  const handleAddToCart = (productId) => {
-    addToCart(productId, 1); // Assuming you always add one quantity at a time
-  };
-
-  return (
-    <div className="product-list-section">
-      <div className='container'>
-        <div className="row">
-          <ul>
-            {products.map((product) => (
-              <li key={product.id}>
-                <img src={product.imageUrl} alt={product.name} />
-                <h2>{product.name}</h2>
-                <h2 className='price'>{product.product_price}</h2>
-                <button onClick={() => handleAddToCart(product.id)}>Add to Cart</button>
-                <Link to={`/product/${product.id}`}>View Details</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default ProductList;
-
-          <Route
-  path="/"
-  element={<ProductList addToCart={addToCart} />} // Make sure to pass addToCart here
-/>
-
-
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from "./components/Header_Com/Header";
-import Footer from "./components/Footer_Com/Footer";
-import ProductList from "./components/Product_Com/ProductList";
-import ProductDetails from "./components/Product_Com/ProductDynamic";
-import Cart from "./components/Product_Com/Cart";
-
-function App() {
-  const [cartItems, setCartItems] = useState([]);
-
-  const addToCart = (productId, quantity) => {
-    const existingProductIndex = cartItems.findIndex(item => item.id === productId);
-
-    if (existingProductIndex !== -1) {
-      const updatedCartItems = [...cartItems];
-      updatedCartItems[existingProductIndex].quantity += quantity;
-      setCartItems(updatedCartItems);
-    } else {
-      const product = { id: productId, name: `Product ${productId}`, product_price: 20.99, quantity };
-      setCartItems(prevCartItems => [...prevCartItems, product]);
-    }
-  };
-
-  const removeFromCart = (productId) => {
-    const updatedCartItems = cartItems.filter(item => item.id !== productId);
-    setCartItems(updatedCartItems);
-  };
-
-  const updateQuantity = (productId, newQuantity) => {
-    const updatedCartItems = cartItems.map(item => {
-      if (item.id === productId) {
-        return { ...item, quantity: newQuantity };
-      }
-      return item;
-    });
-    setCartItems(updatedCartItems);
-  };
-
-  return (
-    <div className="App">
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<ProductList addToCart={addToCart} />} />
-          <Route path="/product/:productId" element={<ProductDetails addToCart={addToCart} />} />
-          <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} />} />
-        </Routes>
-        <Footer />
-      </Router>
-    </div>
-  );
-}
-
-export default App;
-          
