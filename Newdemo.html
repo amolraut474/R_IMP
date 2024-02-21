@@ -1,1 +1,95 @@
+import React, { useEffect } from 'react';
+import './App.css';
+import Sidebar from './Sidebar';
+
+function App() {
+  useEffect(() => {
+    const links = document.querySelectorAll('.sidebar a');
+
+    links.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  }, []);
+
+  return (
+    <div className="App">
+      <Sidebar />
+      <div className="main-content">
+        <div id="section1" className="section">
+          <h2>Section 1</h2>
+          <p>This is section 1.</p>
+        </div>
+
+        <div id="section2" className="section">
+          <h2>Section 2</h2>
+          <p>This is section 2.</p>
+        </div>
+
+        <div id="section3" className="section">
+          <h2>Section 3</h2>
+          <p>This is section 3.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+
+import React, { useEffect } from 'react';
+import './App.css';
+import Sidebar from './Sidebar';
+
+function App() {
+  useEffect(() => {
+    const links = document.querySelectorAll('.sidebar a');
+
+    links.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  }, []);
+
+  return (
+    <div className="App">
+      <Sidebar />
+      <div className="main-content">
+        <div id="section1" className="section">
+          <h2>Section 1</h2>
+          <p>This is section 1.</p>
+        </div>
+
+        <div id="section2" className="section">
+          <h2>Section 2</h2>
+          <p>This is section 2.</p>
+        </div>
+
+        <div id="section3" className="section">
+          <h2>Section 3</h2>
+          <p>This is section 3.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
 
