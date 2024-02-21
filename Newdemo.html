@@ -303,3 +303,136 @@ function App() {
 }
 
 export default App;
+
+
+
+
+              import React from 'react';
+import './App.css';
+import Sidebar from './Sidebar';
+import Content from './Content';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <Sidebar />
+        <Content />
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+
+
+          import React from 'react';
+import { Link } from 'react-router-dom';
+import './Sidebar.css';
+
+const Sidebar = () => {
+  return (
+    <div className="sidebar">
+      <ul>
+        <li><Link to="#section1">Section 1</Link></li>
+        <li><Link to="#section2">Section 2</Link></li>
+        <li><Link to="#section3">Section 3</Link></li>
+        <li><Link to="#section4">Section 4</Link></li>
+      </ul>
+    </div>
+  );
+};
+
+export default Sidebar;
+
+
+          import React from 'react';
+import './Content.css';
+
+const Content = () => {
+  return (
+    <div className="content">
+      <div id="section1" className="section">
+        <h2>Section 1</h2>
+        <p>This is section 1.</p>
+      </div>
+
+      <div id="section2" className="section">
+        <h2>Section 2</h2>
+        <p>This is section 2.</p>
+      </div>
+
+      <div id="section3" className="section">
+        <h2>Section 3</h2>
+        <p>This is section 3.</p>
+      </div>
+
+      <div id="section4" className="section">
+        <h2>Section 4</h2>
+        <p>This is section 4.</p>
+      </div>
+    </div>
+  );
+};
+
+export default Content;
+
+
+
+          .App {
+  display: flex;
+}
+
+.sidebar {
+  width: 200px;
+  height: 100vh;
+  background-color: #333;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 10px;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+  color: yellow;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.section {
+  margin-top: 50px;
+}
+
+/* Media query for small screens */
+@media screen and (max-width: 768px) {
+  .App {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .content {
+    padding: 10px;
+  }
+}
