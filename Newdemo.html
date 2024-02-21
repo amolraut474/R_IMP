@@ -200,3 +200,106 @@ function App() {
 }
 
 export default App;
+
+
+
+
+.App {
+  display: flex;
+}
+
+.sidebar {
+  width: 200px;
+  height: 100vh;
+  background-color: #333;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 10px;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+  color: yellow;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+/* Media query for small screens */
+@media screen and (max-width: 768px) {
+  .App {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+  }
+
+  .content {
+    padding: 10px;
+  }
+}
+
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './Sidebar.css';
+
+const Sidebar = () => {
+  return (
+    <div className="sidebar">
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/about">About</Link></li>
+        <li><Link to="/projects">Projects</Link></li>
+        <li><Link to="/contact">Contact</Link></li>
+      </ul>
+    </div>
+  );
+};
+
+export default Sidebar;
+
+
+
+import React from 'react';
+import './App.css';
+import Sidebar from './Sidebar';
+import Home from './Home';
+import About from './About';
+import Projects from './Projects';
+import Contact from './Contact';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <Sidebar />
+        <div className="content">
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/about" component={About} />
+            <Route path="/projects" component={Projects} />
+            <Route path="/contact" component={Contact} />
+          </Switch>
+        </div>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
