@@ -93,3 +93,63 @@ function App() {
 
 export default App;
 
+
+
+import React from 'react';
+import './Sidebar.css';
+
+const Sidebar = () => {
+  return (
+    <div className="sidebar">
+      <ul>
+        <li><a href="#section1">Section 1</a></li>
+        <li><a href="#section2">Section 2</a></li>
+        <li><a href="#section3">Section 3</a></li>
+      </ul>
+    </div>
+  );
+};
+
+export default Sidebar;
+
+
+
+
+.App {
+  display: flex;
+}
+
+.main-content {
+  flex-grow: 1;
+}
+
+.section {
+  margin-top: 50px; /* Add spacing between sections */
+}
+
+.sidebar {
+  width: 200px;
+  height: 100%;
+  background-color: #333;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 10px;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+  color: yellow;
+}
