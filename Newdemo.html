@@ -1,76 +1,62 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './Sidebar.css';
-
-const Sidebar = ({ pages }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
-  return (
-    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-      <div className="toggle-btn" onClick={toggleSidebar}>
-        ☰
-      </div>
-      <ul>
-        {pages.map(page => (
-          <li key={page.id}>
-            <Link to={page.path} onClick={() => setIsOpen(false)}>
-              {page.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default Sidebar;
+// App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import Home from './Home'; // Import your Home component
-import About from './About'; // Import your About component
-import PageNotFound from './PageNotFound'; // Import your PageNotFound component
-import './App.css';
-
-const pages = [
-  { id: 1, title: 'Home', path: '/' },
-  { id: 2, title: 'About', path: '/about' },
-  // Add more pages as needed
-];
+import Layout from './Layout';
+import HomePage from './HomePage';
+import AboutPage from './AboutPage';
+import ContactPage from './ContactPage';
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Sidebar pages={pages} />
-        <div className="content">
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/about" component={About} />
-            {/* Add more Route components for additional pages */}
-            <Route component={PageNotFound} />
-          </Switch>
-        </div>
-      </div>
+      <Layout>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/about" component={AboutPage} />
+          <Route path="/contact" component={ContactPage} />
+        </Switch>
+      </Layout>
     </Router>
   );
 }
 
 export default App;
 
+// Sidebar.js
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './Sidebar.css';
 
-              .sidebar {
+function Sidebar() {
+  return (
+    <div className="sidebar">
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/contact">Contact</Link>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  );
+}
+
+export default Sidebar;
+/* Sidebar.css */
+.sidebar {
   width: 250px;
-  height: 100vh;
+  height: 100%;
   background-color: #333;
   position: fixed;
   top: 0;
   left: -250px;
-  transition: left 0.3s ease;
+  transition: left 0.3s ease-in-out;
 }
 
 .sidebar.open {
@@ -78,108 +64,65 @@ export default App;
 }
 
 .toggle-btn {
-  background-color: #222;
-  color: white;
-  padding: 10px;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  left: 10px;
+  display: none; /* Hide toggle button by default */
 }
 
-ul {
+nav {
+  padding-top: 50px;
+}
+
+nav ul {
   list-style-type: none;
   padding: 0;
 }
 
-li {
+nav ul li {
   padding: 10px;
+  color: #fff;
 }
 
-li a {
-  color: white;
-  text-decoration: none;
-}
-
-li a:hover {
+nav ul li:hover {
   background-color: #555;
 }
 
 /* Media query for mobile devices */
-@media (max-width: 768px) {
+@media only screen and (max-width: 768px) {
+  .toggle-btn {
+    display: block; /* Show toggle button for mobile */
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+  }
+
   .sidebar {
-    width: 100%;
-    left: -100%;
+    width: 100%; /* Full width on mobile */
+    height: 100%;
+    left: ${({ isOpen }) => (isOpen ? '0' : '-100%')}; /* Adjust left position for mobile */
+    transition: left 0.3s ease-in-out; /* Transition effect */
   }
 
   .sidebar.open {
     left: 0;
   }
 }
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './Sidebar.css';
 
-const Sidebar = ({ pages }) => {
-  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
-  return (
-    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-      <div className="toggle-btn" onClick={toggleSidebar}>
-        ☰
-      </div>
-      <ul>
-        {pages.map(page => (
-          <li key={page.id}>
-            <Link to={page.path} onClick={() => setIsOpen(false)}>
-              {page.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default Sidebar;
-
+            // Layout.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import Home from './Home'; // Import your Home component
-import About from './About'; // Import your About component
-import PageNotFound from './PageNotFound'; // Import your PageNotFound component
-import './App.css';
 
-const pages = [
-  { id: 1, title: 'Home', path: '/' },
-  { id: 2, title: 'About', path: '/about' },
-  // Add more pages as needed
-];
-
-function App() {
+function Layout({ children }) {
   return (
-    <Router>
-      <div className="App">
-        <Sidebar pages={pages} />
-        <div className="content">
-          <Switch>
-            {pages.map(page => (
-              <Route key={page.id} path={page.path} exact component={page.component} />
-            ))}
-            <Route component={PageNotFound} />
-          </Switch>
-        </div>
-      </div>
-    </Router>
+    <div className="layout">
+      <Sidebar />
+      <div className="content">{children}</div>
+    </div>
   );
 }
 
-export default App;
-
-              
-              
+export default Layout;
+        
