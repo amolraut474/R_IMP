@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Sidebar.css';
 
-const Sidebar = () => {
+const Sidebar = ({ pages }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -15,105 +15,55 @@ const Sidebar = () => {
         ☰
       </div>
       <ul>
-        <li><Link to="/" onClick={() => setIsOpen(false)}>Home</Link></li>
-        <li><Link to="/about" onClick={() => setIsOpen(false)}>About</Link></li>
-        {/* Add more navigation links as needed */}
+        {pages.map(page => (
+          <li key={page.id}>
+            <Link to={page.path} onClick={() => setIsOpen(false)}>
+              {page.title}
+            </Link>
+          </li>
+        ))}
       </ul>
     </div>
   );
 };
 
 export default Sidebar;
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import Home from './Home'; // Import your Home component
+import About from './About'; // Import your About component
+import PageNotFound from './PageNotFound'; // Import your PageNotFound component
+import './App.css';
 
+const pages = [
+  { id: 1, title: 'Home', path: '/' },
+  { id: 2, title: 'About', path: '/about' },
+  // Add more pages as needed
+];
 
-.sidebar {
-  width: 250px;
-  height: 100vh;
-  background-color: #333;
-  position: fixed;
-  top: 0;
-  left: -250px;
-  transition: left 0.3s ease;
-}
-
-.sidebar.open {
-  left: 0;
-}
-
-.toggle-btn {
-  background-color: #222;
-  color: white;
-  padding: 10px;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  padding: 10px;
-}
-
-li a {
-  color: white;
-  text-decoration: none;
-}
-
-li a:hover {
-  background-color: #555;
-}
-
-/* Media query for mobile devices */
-@media screen and (max-width: 768px) {
-  .sidebar {
-    width: 100%;
-    left: -100%;
-  }
-
-  .sidebar.open {
-    left: 0;
-  }
-
-  .toggle-btn {
-    display: block;
-  }
-}
-import React, { useState, Suspense } from 'react';
-import { Link } from 'react-router-dom';
-import './Sidebar.css';
-
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
+function App() {
   return (
-    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-      <div className="toggle-btn" onClick={toggleSidebar}>
-        ☰
+    <Router>
+      <div className="App">
+        <Sidebar pages={pages} />
+        <div className="content">
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/about" component={About} />
+            {/* Add more Route components for additional pages */}
+            <Route component={PageNotFound} />
+          </Switch>
+        </div>
       </div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <ul>
-          <li><Link to="/" onClick={() => setIsOpen(false)}>Home</Link></li>
-          <li><Link to="/about" onClick={() => setIsOpen(false)}>About</Link></li>
-          {/* Add more navigation links as needed */}
-        </ul>
-      </Suspense>
-    </div>
+    </Router>
   );
-};
+}
 
-export default Sidebar;
+export default App;
 
 
-.sidebar {
+              .sidebar {
   width: 250px;
   height: 100vh;
   background-color: #333;
@@ -167,29 +117,3 @@ li a:hover {
   }
 }
 
-
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import Home from './Home'; // Import your Home component
-import About from './About'; // Import your About component
-import './App.css';
-
-function App() {
-  return (
-    <Router>
-      <div className="App">
-        <Sidebar />
-        <div className="content">
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/about" component={About} />
-            {/* Add more Route components for additional pages */}
-          </Switch>
-        </div>
-      </div>
-    </Router>
-  );
-}
-
-export default App;
