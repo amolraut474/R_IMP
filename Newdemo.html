@@ -196,4 +196,109 @@ export default Sidebar;
 
 
               
+// Sidebar.js
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
+function Sidebar() {
+  const [isOpen, setIsOpen] = useState(true);
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div>
+      <input type="checkbox" id="toggle" className="toggle-button" checked={isOpen} onChange={handleToggle} />
+      <label htmlFor="toggle">&#9776;</label>
+      <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+        <ul>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/contact">Contact</Link></li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default Sidebar;
+
+
+              /* styles.css */
+
+/* Main layout */
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 200px; /* Adjust width as needed */
+  background-color: #333; /* Sidebar background color */
+  color: #fff; /* Sidebar text color */
+  padding: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Sidebar links */
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Toggle button */
+.toggle-button {
+  display: none; /* Hide toggle button by default */
+}
+
+/* Media query for mobile view */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -200px; /* Hide sidebar by default */
+    z-index: 1000;
+  }
+
+  .toggle-button {
+    display: block; /* Show toggle button */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1500;
+    cursor: pointer;
+  }
+
+  .content {
+    margin-left: 0; /* Adjust content margin */
+  }
+
+  /* Show sidebar when toggle button is checked */
+  .toggle-button:checked ~ .sidebar {
+    transform: translateX(0);
+  }
+
+  /* Hide sidebar when toggle button is checked */
+  .toggle-button:checked ~ .content {
+    margin-left: -200px;
+  }
+}
+              
