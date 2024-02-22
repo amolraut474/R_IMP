@@ -301,4 +301,87 @@ export default Sidebar;
     margin-left: -200px;
   }
 }
-              
+              /* styles.css */
+
+/* Main layout */
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 200px; /* Adjust width as needed */
+  background-color: #333; /* Sidebar background color */
+  color: #fff; /* Sidebar text color */
+  padding: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* Sidebar links */
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Toggle button */
+.toggle-button {
+  display: none; /* Hide toggle button by default */
+}
+
+/* Media query for mobile view */
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -200px; /* Hide sidebar by default */
+    bottom: 0;
+    z-index: 1000;
+  }
+
+  .content {
+    margin-left: 0; /* Adjust content margin */
+  }
+
+  /* Show sidebar when toggle button is checked */
+  .toggle-button:checked ~ .sidebar {
+    transform: translateX(0);
+  }
+
+  /* Adjust content margin when sidebar is shown */
+  .toggle-button:checked ~ .content {
+    margin-left: 200px;
+  }
+
+  .toggle-button {
+    display: block; /* Show toggle button */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1500;
+    cursor: pointer;
+  }
+}
+
