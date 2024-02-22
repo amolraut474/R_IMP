@@ -1,122 +1,26 @@
-// App.js
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import MainContent from './MainContent';
-import './App.css';
+import './Sidebar.css'; // Import your sidebar styles
 
-const App = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+    setIsOpen(!isOpen);
   };
 
   return (
-    <Router>
-      <div className="app">
-        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-        <div className="content">
-          <Switch>
-            <Route path="/" exact>
-              <MainContent />
-            </Route>
-            {/* Define routes for other pages */}
-          </Switch>
-        </div>
-      </div>
-    </Router>
-  );
-};
-
-export default App;
-
-
-
-// Sidebar.js
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './Sidebar.css';
-
-const Sidebar = ({ isOpen, toggleSidebar }) => {
-  return (
-    <nav className={`sidebar ${isOpen ? 'open' : ''}`}>
+    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+      <button className="toggle-btn" onClick={toggleSidebar}>
+        Toggle Sidebar
+      </button>
       <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/portfolio">Portfolio</Link></li>
-        <li><Link to="/contact">Contact</Link></li>
+        <li>Menu Item 1</li>
+        <li>Menu Item 2</li>
+        <li>Menu Item 3</li>
+        <li>Menu Item 4</li>
       </ul>
-      <button className="close-btn" onClick={toggleSidebar}>Close</button>
-    </nav>
-  );
-};
-
-export default Sidebar;
-
-// MainContent.js
-import React from 'react';
-import './MainContent.css';
-
-const MainContent = () => {
-  return (
-    <div className="main-content">
-      <h1>Welcome to My Portfolio</h1>
-      {/* Your portfolio content goes here */}
     </div>
   );
 };
 
-export default MainContent;
-/* App.css */
-.app {
-  display: flex;
-}
-
-.content {
-  flex: 1;
-}
-
-/* Sidebar.css */
-.sidebar {
-  width: 250px;
-  background-color: #333;
-  color: #fff;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: -250px;
-  transition: left 0.3s ease;
-}
-
-.sidebar.open {
-  left: 0;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar li {
-  padding: 10px;
-}
-
-.sidebar a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-}
-
-/* MainContent.css */
-.main-content {
-  padding: 20px;
-}
+export default Sidebar;
