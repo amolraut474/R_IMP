@@ -1,7 +1,7 @@
 // App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Layout from './Layout';
+import Sidebar from './Sidebar';
 import HomePage from './HomePage';
 import AboutPage from './AboutPage';
 import ContactPage from './ContactPage';
@@ -9,120 +9,94 @@ import ContactPage from './ContactPage';
 function App() {
   return (
     <Router>
-      <Layout>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/about" component={AboutPage} />
-          <Route path="/contact" component={ContactPage} />
-        </Switch>
-      </Layout>
+      <div className="app">
+        <Sidebar />
+        <div className="content">
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/about" component={AboutPage} />
+            <Route path="/contact" component={ContactPage} />
+          </Switch>
+        </div>
+      </div>
     </Router>
   );
 }
 
 export default App;
 
-// Sidebar.js
+
+              // Sidebar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Sidebar.css';
 
 function Sidebar() {
   return (
     <div className="sidebar">
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-          <li>
-            <Link to="/contact">Contact</Link>
-          </li>
-        </ul>
-      </nav>
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/about">About</Link></li>
+        <li><Link to="/contact">Contact</Link></li>
+      </ul>
     </div>
   );
 }
 
 export default Sidebar;
-/* Sidebar.css */
+
+
+/* styles.css */
+
+/* Main layout */
+.app {
+  display: flex;
+  height: 100vh;
+}
+
 .sidebar {
-  width: 250px;
-  height: 100%;
-  background-color: #333;
-  position: fixed;
-  top: 0;
-  left: -250px;
-  transition: left 0.3s ease-in-out;
+  width: 200px; /* Adjust width as needed */
+  background-color: #333; /* Sidebar background color */
+  color: #fff; /* Sidebar text color */
+  padding: 20px;
 }
 
-.sidebar.open {
-  left: 0;
+.content {
+  flex: 1;
+  padding: 20px;
 }
 
-.toggle-btn {
-  display: none; /* Hide toggle button by default */
-}
-
-nav {
-  padding-top: 50px;
-}
-
-nav ul {
+/* Sidebar links */
+.sidebar ul {
   list-style-type: none;
   padding: 0;
 }
 
-nav ul li {
-  padding: 10px;
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar ul li a {
   color: #fff;
+  text-decoration: none;
 }
 
-nav ul li:hover {
-  background-color: #555;
+.sidebar ul li a:hover {
+  text-decoration: underline;
 }
 
-/* Media query for mobile devices */
-@media only screen and (max-width: 768px) {
-  .toggle-btn {
-    display: block; /* Show toggle button for mobile */
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: transparent;
-    border: none;
-    color: #fff;
-    cursor: pointer;
+/* Media query for mobile view */
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
   }
 
   .sidebar {
-    width: 100%; /* Full width on mobile */
-    height: 100%;
-    left: ${({ isOpen }) => (isOpen ? '0' : '-100%')}; /* Adjust left position for mobile */
-    transition: left 0.3s ease-in-out; /* Transition effect */
+    width: 100%; /* Sidebar takes full width */
   }
 
-  .sidebar.open {
-    left: 0;
+  .content {
+    padding: 20px;
   }
 }
 
-
-            // Layout.js
-import React from 'react';
-import Sidebar from './Sidebar';
-
-function Layout({ children }) {
-  return (
-    <div className="layout">
-      <Sidebar />
-      <div className="content">{children}</div>
-    </div>
-  );
-}
-
-export default Layout;
-        
+              
