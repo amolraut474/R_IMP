@@ -1,160 +1,17 @@
 import React, { useState } from 'react';
-import './ToggleNavigation.css'; // Import CSS file for styling
 
-function ToggleNavigation() {
-  const [isOpen, setIsOpen] = useState(false);
+const ToggleButton = () => {
+  const [isToggled, setIsToggled] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
+  const handleToggle = () => {
+    setIsToggled(!isToggled);
   };
 
   return (
-    <div className="navigation-wrapper">
-      <button className={`toggle-button ${isOpen ? 'close' : ''}`} onClick={toggleMenu}></button>
-      <nav className={`menu ${isOpen ? 'open' : ''}`}>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Services</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
+    <button onClick={handleToggle}>
+      {isToggled ? 'ON' : 'OFF'}
+    </button>
   );
-}
+};
 
-export default ToggleNavigation;
-
-
-
-/* Toggle Navigation */
-.navigation-wrapper {
-  position: relative;
-}
-
-.toggle-button {
-  background: url('toggle-icon.svg') no-repeat;
-  background-size: contain;
-  width: 30px;
-  height: 30px;
-  border: none;
-  cursor: pointer;
-}
-
-.toggle-button.close {
-  background: url('close-icon.svg') no-repeat;
-  background-size: contain;
-}
-
-.menu {
-  display: none;
-}
-
-.menu.open {
-  display: block;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-li {
-  margin-bottom: 10px;
-}
-
-a {
-  text-decoration: none;
-  color: #333;
-}
-
-
-
-
-import React, { useState } from 'react';
-import './Header.css'; // Import CSS file for styling
-
-function Header() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
-  return (
-    <header className="header">
-      <div className="logo">Your Logo</div>
-      <button className={`toggle-button ${isOpen ? 'close' : ''}`} onClick={toggleMenu}></button>
-      <nav className={`menu ${isOpen ? 'open' : ''}`}>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Services</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </nav>
-    </header>
-  );
-}
-
-export default Header;
-
-
-
-/* Header */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  background-color: #333;
-  color: #fff;
-}
-
-.logo {
-  font-size: 20px;
-}
-
-.toggle-button {
-  display: block;
-  background: url('toggle-icon.svg') no-repeat;
-  background-size: contain;
-  width: 30px;
-  height: 30px;
-  border: none;
-  cursor: pointer;
-}
-
-.toggle-button.close {
-  background: url('close-icon.svg') no-repeat;
-  background-size: contain;
-}
-
-.menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #333;
-  width: 100%;
-}
-
-.menu.open {
-  display: block;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-li {
-  margin-bottom: 10px;
-}
-
-a {
-  text-decoration: none;
-  color: #fff;
-}
+export default ToggleButton;
