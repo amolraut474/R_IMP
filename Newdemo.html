@@ -104,3 +104,93 @@ const ToggleButton = () => {
 };
 
 export default ToggleButton;
+
+
+
+
+
+
+import React, { useState } from 'react';
+import './toggleButton.css'; // Import the CSS file
+
+const ToggleButton = () => {
+  const [isToggled, setIsToggled] = useState(false);
+
+  const handleToggle = () => {
+    setIsToggled(!isToggled);
+  };
+
+  return (
+    <div className="toggle-container">
+      <button 
+        className={`toggle-button ${isToggled ? 'on' : 'off'}`} 
+        onClick={handleToggle}
+      >
+        {isToggled ? 'ON' : 'OFF'}
+      </button>
+      {isToggled && (
+        <div className="menu">
+          <ul>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ToggleButton;
+
+
+
+
+.toggle-container {
+  position: relative;
+  display: inline-block;
+}
+
+.toggle-button {
+  background-color: #ccc;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.toggle-button:hover {
+  background-color: #555;
+}
+
+.toggle-button.on {
+  background-color: #5cb85c;
+}
+
+.toggle-button.off {
+  background-color: #d9534f;
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border-radius: 4px;
+  padding: 8px 0;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.menu.active {
+  opacity: 1;
+}
