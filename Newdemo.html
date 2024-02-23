@@ -1,196 +1,67 @@
-import React, { useState } from 'react';
+// App.js
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import BlogList from './BlogList';
+import SingleBlog from './SingleBlog';
 
-const ToggleButton = () => {
-  const [isToggled, setIsToggled] = useState(false);
-
-  const handleToggle = () => {
-    setIsToggled(!isToggled);
-  };
-
+function App() {
   return (
-    <button onClick={handleToggle}>
-      {isToggled ? 'ON' : 'OFF'}
-    </button>
+    <Router>
+      <Routes>
+        <Route path="/" element={<BlogList />} />
+        <Route path="/blog/:id" element={<SingleBlog />} />
+      </Routes>
+    </Router>
   );
-};
-
-export default ToggleButton;
-/* toggleButton.css */
-
-.toggle-button {
-  background-color: #ccc;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: background-color 0.3s;
 }
 
-.toggle-button:hover {
-  background-color: #555;
-}
+export default App;
 
-.toggle-button.on {
-  background-color: #5cb85c;
-}
+// BlogList.js
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-.toggle-button.off {
-  background-color: #d9534f;
-}
-
-
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import './toggleButton.css'; // Import the CSS file
-
-const ToggleButton = () => {
-  const [isToggled, setIsToggled] = useState(false);
-
-  const handleToggle = () => {
-    setIsToggled(!isToggled);
-  };
-
-  return (
-    <NavLink to="/your-route" className={`nav-link ${isToggled ? 'on' : 'off'}`}>
-      <button 
-        className={`toggle-button ${isToggled ? 'on' : 'off'}`} 
-        onClick={handleToggle}
-      >
-        {isToggled ? 'ON' : 'OFF'}
-        {isToggled ? <span> - Content when ON</span> : <span> - Content when OFF</span>}
-      </button>
-    </NavLink>
-  );
-};
-
-export default ToggleButton;
-
-
-
-
-import React, { useState } from 'react';
-import './toggleButton.css'; // Import the CSS file
-
-const ToggleButton = () => {
-  const [isToggled, setIsToggled] = useState(false);
-
-  const handleToggle = () => {
-    setIsToggled(!isToggled);
-  };
+const BlogList = () => {
+  const blogs = [
+    { id: 1, title: 'Blog 1', content: 'Content for Blog 1' },
+    { id: 2, title: 'Blog 2', content: 'Content for Blog 2' },
+    { id: 3, title: 'Blog 3', content: 'Content for Blog 3' },
+  ];
 
   return (
     <div>
-      <button 
-        className={`toggle-button ${isToggled ? 'on' : 'off'}`} 
-        onClick={handleToggle}
-      >
-        {isToggled ? 'ON' : 'OFF'}
-      </button>
-      {isToggled && (
-        <ul>
-          <li>Item 1</li>
-          <li>Item 2</li>
-          <li>Item 3</li>
-        </ul>
-      )}
+      <h1>Blog List</h1>
+      <ul>
+        {blogs.map(blog => (
+          <li key={blog.id}>
+            <Link to={`/blog/${blog.id}`}>{blog.title}</Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
-};
+}
 
-export default ToggleButton;
-
-
+export default BlogList;
 
 
+          // SingleBlog.js
+import React from 'react';
+import { useParams } from 'react-router-dom';
 
+const SingleBlog = () => {
+  const { id } = useParams();
 
-import React, { useState } from 'react';
-import './toggleButton.css'; // Import the CSS file
-
-const ToggleButton = () => {
-  const [isToggled, setIsToggled] = useState(false);
-
-  const handleToggle = () => {
-    setIsToggled(!isToggled);
-  };
+  // Assuming you fetch blog data from an API or database based on the id
+  const blog = { id: 1, title: 'Blog 1', content: 'Content for Blog 1' };
 
   return (
-    <div className="toggle-container">
-      <button 
-        className={`toggle-button ${isToggled ? 'on' : 'off'}`} 
-        onClick={handleToggle}
-      >
-        {isToggled ? 'ON' : 'OFF'}
-      </button>
-      {isToggled && (
-        <div className="menu">
-          <ul>
-            <li>Item 1</li>
-            <li>Item 2</li>
-            <li>Item 3</li>
-          </ul>
-        </div>
-      )}
+    <div>
+      <h2>{blog.title}</h2>
+      <p>{blog.content}</p>
     </div>
   );
-};
-
-export default ToggleButton;
-
-
-
-
-.toggle-container {
-  position: relative;
-  display: inline-block;
 }
 
-.toggle-button {
-  background-color: #ccc;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: background-color 0.3s;
-}
-
-.toggle-button:hover {
-  background-color: #555;
-}
-
-.toggle-button.on {
-  background-color: #5cb85c;
-}
-
-.toggle-button.off {
-  background-color: #d9534f;
-}
-
-.menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  border-radius: 4px;
-  padding: 8px 0;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.menu.active {
-  opacity: 1;
-}
+export default SingleBlog;
+          
