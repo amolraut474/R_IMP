@@ -1,104 +1,70 @@
-// Sidebar.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import './ToggleNavigation.css'; // Import CSS file for styling
 
-function Sidebar() {
+function ToggleNavigation() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleToggle = () => {
+  const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   return (
-    <div>
-      <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+    <div className="navigation-wrapper">
+      <button className={`toggle-button ${isOpen ? 'close' : ''}`} onClick={toggleMenu}></button>
+      <nav className={`menu ${isOpen ? 'open' : ''}`}>
         <ul>
-          <li><Link to="/" onClick={() => setIsOpen(false)}>Home</Link></li>
-          <li><Link to="/about" onClick={() => setIsOpen(false)}>About</Link></li>
-          <li><Link to="/contact" onClick={() => setIsOpen(false)}>Contact</Link></li>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Contact</a></li>
         </ul>
-      </div>
-      <div className="toggle-button" onClick={handleToggle}>&#9776;</div>
+      </nav>
     </div>
   );
 }
 
-export default Sidebar;
+export default ToggleNavigation;
 
 
 
-/* styles.css */
-
-/* Main layout */
-.app {
-  display: flex;
-  height: 100vh;
+/* Toggle Navigation */
+.navigation-wrapper {
+  position: relative;
 }
 
-.sidebar {
-  width: 200px; /* Adjust width as needed */
-  background-color: #333; /* Sidebar background color */
-  color: #fff; /* Sidebar text color */
-  padding: 20px;
+.toggle-button {
+  background: url('toggle-icon.svg') no-repeat;
+  background-size: contain;
+  width: 30px;
+  height: 30px;
+  border: none;
+  cursor: pointer;
 }
 
-.content {
-  flex: 1;
-  padding: 20px;
+.toggle-button.close {
+  background: url('close-icon.svg') no-repeat;
+  background-size: contain;
 }
 
-/* Sidebar links */
-.sidebar ul {
+.menu {
+  display: none;
+}
+
+.menu.open {
+  display: block;
+}
+
+ul {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
-.sidebar ul li {
+li {
   margin-bottom: 10px;
 }
 
-.sidebar ul li a {
-  color: #fff;
+a {
   text-decoration: none;
-}
-
-.sidebar ul li a:hover {
-  text-decoration: underline;
-}
-
-/* Toggle button */
-.toggle-button {
-  display: none; /* Hide toggle button by default */
-}
-
-/* Media query for mobile view */
-@media (max-width: 768px) {
-  .sidebar {
-    display: none; /* Hide sidebar by default on mobile */
-  }
-
-  .toggle-button {
-    display: block; /* Show toggle button on mobile */
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1500;
-    cursor: pointer;
-    color: #fff;
-    background-color: #333;
-    padding: 10px;
-  }
-
-  .sidebar.open {
-    display: block; /* Show sidebar when open class is applied */
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 200px;
-    background-color: #333;
-    color: #fff;
-    z-index: 1000;
-    padding: 20px;
-  }
+  color: #333;
 }
