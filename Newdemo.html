@@ -43,3 +43,30 @@ export default ToggleButton;
 .toggle-button.off {
   background-color: #d9534f;
 }
+
+
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import './toggleButton.css'; // Import the CSS file
+
+const ToggleButton = () => {
+  const [isToggled, setIsToggled] = useState(false);
+
+  const handleToggle = () => {
+    setIsToggled(!isToggled);
+  };
+
+  return (
+    <NavLink to="/your-route" className={`nav-link ${isToggled ? 'on' : 'off'}`}>
+      <button 
+        className={`toggle-button ${isToggled ? 'on' : 'off'}`} 
+        onClick={handleToggle}
+      >
+        {isToggled ? 'ON' : 'OFF'}
+        {isToggled ? <span> - Content when ON</span> : <span> - Content when OFF</span>}
+      </button>
+    </NavLink>
+  );
+};
+
+export default ToggleButton;
