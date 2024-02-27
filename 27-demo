@@ -1,1 +1,157 @@
+// Sidebar.js
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './Sidebar.css';
+function Sidebar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className='sidebar-part'>
+      <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+        <h2 className='sidebar-menu'>MENU</h2>
+        <ul>
+          <li><Link to="/" onClick={() => setIsOpen(false)}>
+            <div className='nav-icon-box'><div><span className='side-bar-left-icon'><i class="bi bi-house-door"></i></span>Home</div>
+            <h3 className='pluse-icon'>+</h3></div></Link></li>
+            <li><Link to="/About" onClick={() => setIsOpen(false)}>
+            <div className='nav-icon-box'><div><span className='side-bar-left-icon'><i class="bi bi-person-circle"></i></span>About</div>
+            <h3 className='pluse-icon'>+</h3></div></Link></li>
+
+            <li><Link to="/Portfolio" onClick={() => setIsOpen(false)}>
+            <div className='nav-icon-box'><div><span className='side-bar-left-icon'><i class="bi bi-briefcase"></i></span>Portfolio</div>
+            <h3 className='pluse-icon'>+</h3></div></Link></li>
+
+            <li><Link to="/Contact" onClick={() => setIsOpen(false)}>
+            <div className='nav-icon-box'><div><span className='side-bar-left-icon'><i class="bi bi-globe"></i></span>Contact</div>
+            <h3 className='pluse-icon'>+</h3></div></Link></li>
+
+            <li><Link to="/Pages" onClick={() => setIsOpen(false)}>
+            <div className='nav-icon-box'><div><span className='side-bar-left-icon'><i class="bi bi-file-earmark"></i></span>Pages</div>
+            <h3 className='pluse-icon'>+</h3></div></Link></li>
+
+            <li><Link to="/Journal" onClick={() => setIsOpen(false)}>
+            <div className='nav-icon-box'><div><span className='side-bar-left-icon'><i class="bi bi-postcard"></i></span>Journal</div>
+            <h3 className='pluse-icon'>+</h3></div></Link></li>
+
+            <div> <h2 className='sidebar-menu'>MENU</h2>
+            <div className='nav-icon-box'><div><span className='side-bar-left-icon'><i class="bi bi-postcard"></i></span>Example@gmail.com</div>
+          </div>
+            
+            </div>
+        </ul>
+      </div>
+     
+      <div className="toggle-button" onClick={handleToggle}>&#9776;</div>
+    </div>
+  );
+}
+
+export default Sidebar;
+
+
+
+/* styles.css */
+
+/* Main layout */
+
+  
+.sidebar {
+  width: 320px;
+  color: #fff;
+  background-color: #35353a;
+  position: fixed;
+  height: 100vh;
+  
+}
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  /* Sidebar links */
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.02);
+    padding: 20px 10px;
+  }
+  
+  .sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+
+  .sidebar ul li:hover{
+    background-color:    #35353a ;
+    border-left: 5px solid #F7B90F;
+
+  }
+
+  .pluse-icon{
+    color: #f7b90f;
+  }
+  
+  /* Toggle button */
+  .toggle-button {
+    display: none; /* Hide toggle button by default */
+  }
+  .sidebar-menu{
+    font-size: 14px;
+    margin-top: 70px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    color: #999;
+  }
+  .nav-icon-box{
+display:flex;
+justify-content: space-between;
+  }
+  .side-bar-left-icon{
+margin-right: 20px;
+font-size: 16px;
+color: #f7b90f;
+  }
+  /* Media query for mobile view */
+  @media (max-width: 768px) {
+    .sidebar {
+      display: none; /* Hide sidebar by default on mobile */
+    }
+  
+    .toggle-button {
+      display: block;
+      position: fixed;
+      top: 6px;
+      right: 125px;
+      z-index: 1500;
+      cursor: pointer;
+      color: #fff;
+      padding: 10px;
+      font-size: 25px;
+    }
+  
+    .sidebar.open {
+      display: block; /* Show sidebar when open class is applied */
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 200px;
+      background-color: #35353a;
+      color: #fff;
+      z-index: 1000;
+      padding: 20px;
+    }
+  }
 
