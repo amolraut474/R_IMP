@@ -154,4 +154,82 @@ color: #f7b90f;
       padding: 20px;
     }
   }
+import React, { useState } from 'react';
+import './NewsletterForm.css'; // Import your CSS file for styling
 
+const NewsletterForm = () => {
+  const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Here you can handle the submission logic, such as sending the email to your backend
+    console.log('Submitting email:', email);
+    // Clear the input field after submission
+    setEmail('');
+  };
+
+  const handleChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  return (
+    <div className="form-container">
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Subscribe</button>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+      </form>
+    </div>
+  );
+};
+
+export default NewsletterForm;
+
+
+/* NewsletterForm.css */
+
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.form-group button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.form-group button:hover {
+  background-color: #0056b3;
+}
+
+/* Optional: Add styles for form validation/error messages */
+.error-message {
+  color: red;
+  font-size: 14px;
+}
