@@ -233,3 +233,54 @@ export default NewsletterForm;
   color: red;
   font-size: 14px;
 }
+import React, { useState } from 'react';
+import './NewsletterForm.css'; // Make sure to import your CSS file for styling
+
+const NewsletterForm = () => {
+  const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validateEmail(email)) {
+      setErrorMessage('Please enter a valid email address.');
+      return;
+    }
+    // Here you can handle the submission logic, such as sending the email to your backend
+    console.log('Submitting email:', email);
+    // Clear the input field after submission
+    setEmail('');
+    setErrorMessage('');
+  };
+
+  const handleChange = (e) => {
+    setEmail(e.target.value);
+    setErrorMessage('');
+  };
+
+  // Function to validate email address
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  return (
+    <div className="form-container">
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Subscribe</button>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+      </form>
+    </div>
+  );
+};
+
+export default NewsletterForm;
