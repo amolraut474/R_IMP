@@ -93,3 +93,74 @@ const ProductList = ({ addToCart }) => {
 };
 
 export default ProductList;
+
+
+
+
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './Products.css';
+import products from './ProductDeta';
+
+const ProductList = ({ addToCart }) => {
+  // State variables for filters
+  const [filterPrice, setFilterPrice] = useState('');
+  const [filterCategory, setFilterCategory] = useState('');
+
+  // Filter function based on price
+  const filterByPrice = (product) => {
+    if (!filterPrice) return true; // If no filter is selected, return all products
+    return product.product_price <= filterPrice;
+  };
+
+  // Filter function based on category
+  const filterByCategory = (product) => {
+    if (!filterCategory) return true; // If no filter is selected, return all products
+    return product.category === filterCategory;
+  };
+
+  // Filtered product list
+  const filteredProducts = products.filter((product) => filterByPrice(product) && filterByCategory(product));
+
+  return (
+    <div className="product-list-section">
+      <div className="container">
+        {/* Filter options */}
+        <div className="filters">
+          <select value={filterPrice} onChange={(e) => setFilterPrice(e.target.value)}>
+            <option value="">All Prices</option>
+            <option value="50">$50 or less</option>
+            <option value="100">$100 or less</option>
+            <option value="200">$200 or less</option>
+            {/* Add more options as needed */}
+          </select>
+          <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
+            <option value="">All Categories</option>
+            <option value="electronics">Electronics</option>
+            <option value="clothing">Clothing</option>
+            <option value="books">Books</option>
+            {/* Add more options as needed */}
+          </select>
+        </div>
+        
+        {/* Render filtered product list */}
+        <div className="row">
+          <ul>
+            {filteredProducts.map((product) => (
+              <li key={product.id}>
+                <img src={product.imageUrl} alt={product.name} />
+                {product.name}
+                <h2 className="price">{product.product_price}</h2>
+                <Link to={`/product/${product.id}`}>View Details</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductList;
+
+
