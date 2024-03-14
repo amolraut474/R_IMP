@@ -1,1 +1,64 @@
 
+<div class="container" onmouseover="moveImage()">
+  <div class="content">
+    <div class="text" id="mainText">
+      <p>Main text here</p>
+    </div>
+    <div class="image" id="image">
+      <img src="your_image.jpg" alt="Image">
+    </div>
+  </div>
+  <div class="additional-background-text" id="additionalBackgroundText">
+    <p>Additional background text here</p>
+  </div>
+  <div class="background-text" id="backgroundText">
+    <p>Background text here</p>
+  </div>
+</div>
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content {
+  display: flex;
+}
+
+.text {
+  flex: 1;
+}
+
+.image {
+  position: relative;
+  transition: transform 0.5s ease;
+}
+
+.background-text {
+  display: none;
+}
+
+.additional-background-text {
+  display: none;
+}
+
+.container:hover .image {
+  transform: translateX(100%);
+}
+
+
+.<div class="container" onmouseover="moveImage()">
+  <div class="content">
+    <div class="text" id="mainText">
+      <p>Main text here</p>
+    </div>
+    <div class="image" id="image">
+      <img src="your_image.jpg" alt="Image">
+    </div>
+  </div>
+  <div class="background-text" id="backgroundText">
+    <p>Background text here</p>
+  </div>
+  <div class="additional-background-text" id="additionalBackgroundText">
+    <p>Additional background text here</p>
+  </div>
+</div>
