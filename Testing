@@ -1,354 +1,59 @@
-<div class="container">
-  <div class="image" id="image">
-    <img src="your_image.jpg" alt="Image">
-  </div>
-  <div class="text" id="text">
-    <p>Your text here</p>
-  </div>
-</div>
-
-
 .container {
   display: flex;
-  align-items: center;
-}
-
-.image,
-.text {
-  display: none;
-}
-
-.image img {
-  width: 200px; /* Adjust size as needed */
-}
-
-.text p {
-  margin: 0;
-}
-
-.container:hover .image,
-.text:hover + .image {
-  display: block;
-}
-
-.container:hover .text,
-.image:hover + .text {
-  display: block;
-}
-document.getElementById('image').addEventListener('mouseover', function() {
-  document.getElementById('text').style.display = 'block';
-});
-
-document.getElementById('text').addEventListener('mouseover', function() {
-  document.getElementById('image').style.display = 'block';
-});
-
-
-
-<div class="container">
-  <div class="content" id="content">
-    <div class="image">
-      <img src="your_image.jpg" alt="Image">
-    </div>
-    <div class="text">
-      <p>Your text here</p>
-    </div>
-  </div>
-</div>
-
-
-
-.container {
-  position: relative;
-  overflow: hidden;
 }
 
 .content {
   display: flex;
-  transition: transform 0.3s ease;
-}
-
-.image,
-.text {
-  flex: 1;
-}
-
-.image img {
-  width: 100%; /* Adjust size as needed */
-}
-
-.text p {
-  margin: 0;
-}
-
-.container:hover #content {
-  transform: translateX(-100%);
-}
-
-
-
-document.querySelector('.container').addEventListener('mouseover', function() {
-  document.getElementById('content').style.transform = 'translateX(-100%)';
-});
-
-document.querySelector('.container').addEventListener('mouseout', function() {
-  document.getElementById('content').style.transform = 'translateX(0)';
-});
-
-
-
-
-
-<div class="container">
-  <div class="image" id="image">
-    <img src="your_image.jpg" alt="Image" onmouseover="moveItems()">
-  </div>
-  <div class="text" id="text" onmouseover="moveItems()">
-    <p>Your text here</p>
-  </div>
-</div>
-
-
-.container {
-  display: flex;
-  align-items: center;
 }
 
 .image {
-  flex: 1;
-  transition: transform 0.5s ease;
+  width: 200px; /* Adjust width as needed */
+  transition: transform 0.5s ease; /* Transition for image */
 }
 
 .text {
   flex: 1;
-  transition: transform 0.5s ease;
-}
-
-.container:hover #image {
-  transform: translateX(100%);
-}
-
-.container:hover #text {
-  transform: translateX(-100%);
-}
-
-
-function moveItems() {
-  const image = document.getElementById('image');
-  const text = document.getElementById('text');
-  
-  // Swap positions of image and text
-  const temp = image.innerHTML;
-  image.innerHTML = text.innerHTML;
-  text.innerHTML = temp;
-}
-
-
-
-<div class="container">
-  <div class="image" id="image" onmouseover="moveImage()">
-    <img src="your_image.jpg" alt="Image">
-  </div>
-  <div class="text" id="text">
-    <p>Your main text here</p>
-  </div>
-  <div class="secondary-text" id="secondaryText">
-    <p>Another text to show when image is hovered</p>
-  </div>
-</div>
-
-
-
-.container {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.image {
-  flex: 1;
-  transition: transform 0.5s ease;
-}
-
-.text,
-.secondary-text {
   display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  text-align: center;
-}
-
-.text p,
-.secondary-text p {
-  margin: 0;
-}
-
-.container:hover #image {
-  transform: translateX(-100%);
-}
-
-.container:hover #text {
-  display: none;
-}
-
-.container:hover #secondaryText {
-  display: block;
-}
-
-
-
-function moveImage() {
-  const image = document.getElementById('image');
-  const text = document.getElementById('text');
-  const secondaryText = document.getElementById('secondaryText');
-
-  // Swap positions of image and text
-  image.style.transform = 'translateX(-100%)';
-  text.style.display = 'none';
-  secondaryText.style.display = 'block';
-}
-
-
-<div class="container">
-  <div class="content" onmouseover="moveImage()">
-    <div class="image" id="image">
-      <img src="your_image.jpg" alt="Image">
-      <div class="background-text" id="backgroundText">
-        <p>Background text</p>
-      </div>
-    </div>
-    <div class="text" id="text">
-      <p>Main text here</p>
-    </div>
-  </div>
-</div>
-
-
-.container {
-  position: relative;
-}
-
-.content {
-  display: flex;
-  align-items: center;
-}
-
-.image {
-  position: relative;
-}
-
-.background-text {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  text-align: center;
-  display: none;
-}
-
-.text {
-  flex: 1;
 }
 
 .container:hover .image {
   order: 2;
+  transform: translateX(-100%); /* Move image to text position */
 }
 
 .container:hover .text {
-  order: 1;
-}
-
-.container:hover .background-text {
   display: block;
 }
 
 
-
 function moveImage() {
   const image = document.getElementById('image');
-  const text = document.getElementById('text');
-  const backgroundText = document.getElementById('backgroundText');
-
-  // Swap positions of image and text
-  image.style.order = '1';
-  text.style.order = '2';
-  backgroundText.style.display = 'block';
+  const mainText = document.getElementById('mainText');
+  const secondaryText = document.getElementById('secondaryText');
+  
+  // Toggle display of main and secondary text
+  mainText.style.display = mainText.style.display === 'none' ? 'block' : 'none';
+  secondaryText.style.display = secondaryText.style.display === 'none' ? 'block' : 'none';
 }
 
-
-
-function moveImage() {
-  const image = document.getElementById('image');
-  const text = document.getElementById('text');
-  const backgroundText = document.getElementById('backgroundText');
-
-  // Swap positions of image and text
-  const temp = image.innerHTML;
-  image.innerHTML = text.innerHTML;
-  text.innerHTML = temp;
-
-  // Toggle background text visibility
-  backgroundText.style.display = backgroundText.style.display === 'none' ? 'block' : 'none';
+.container:hover #mainText {
+  order: 3;
 }
 
-
-
-.container {
-  display: flex;
-  align-items: center;
-}
-
-.image {
-  position: relative;
-  transition: order 0.5s ease;
-}
-
-.text {
-  transition: order 0.5s ease;
-}
-
-.background-text {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  text-align: center;
-  display: none;
-  transition: opacity 0.5s ease;
-  opacity: 0;
-}
-
-.container:hover #image {
-  order: 2;
-}
-
-.container:hover #text {
+.container:hover #secondaryText {
   order: 1;
 }
-
-.container:hover .background-text {
-  display: block;
-  opacity: 1;
-}
-
-
-
-<div class="container" onmouseover="moveImage()">
-  <div class="image" id="image">
-    <img src="your_image.jpg" alt="Image">
-    <div class="background-text" id="backgroundText">
-      <p>Background text</p>
+<div class="container">
+  <div class="content" onmouseover="moveImage()">
+    <div class="image" id="image">
+      <img src="your_image.jpg" alt="Image">
+    </div>
+    <div class="text main-text" id="mainText">
+      <p>Main text here</p>
+    </div>
+    <div class="text secondary-text" id="secondaryText">
+      <p>Secondary text here</p>
     </div>
   </div>
-  <div class="text" id="text">
-    <p>Main text here</p>
-  </div>
 </div>
+
