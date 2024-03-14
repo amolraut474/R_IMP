@@ -228,3 +228,62 @@ function moveImage() {
   text.style.display = 'none';
   backgroundText.style.display = 'block';
 }
+function moveImage() {
+  const image = document.getElementById('image');
+  const mainText = document.getElementById('mainText');
+  const secondaryText = document.getElementById('secondaryText');
+  
+  // Toggle display of main and secondary text
+  mainText.style.display = mainText.style.display === 'none' ? 'block' : 'none';
+  secondaryText.style.display = secondaryText.style.display === 'none' ? 'block' : 'none';
+}
+.container {
+  display: flex;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+}
+
+.image {
+  width: 200px; /* Adjust width as needed */
+  transition: transform 0.5s ease;
+}
+
+.text {
+  flex: 1;
+}
+
+.secondary-text {
+  display: none;
+}
+
+.container:hover #image {
+  order: 1;
+  transform: translateX(100%);
+}
+
+.container:hover #mainText {
+  order: 2;
+}
+
+.container:hover #secondaryText {
+  order: 0;
+  display: block;
+}
+
+
+<div class="container">
+  <div class="content" onmouseover="moveImage()">
+    <div class="text secondary-text" id="secondaryText">
+      <p>Secondary text here</p>
+    </div>
+    <div class="image" id="image">
+      <img src="your_image.jpg" alt="Image">
+    </div>
+    <div class="text main-text" id="mainText">
+      <p>Main text here</p>
+    </div>
+  </div>
+</div>
