@@ -211,3 +211,72 @@ function moveImage() {
   text.style.display = 'none';
   secondaryText.style.display = 'block';
 }
+
+
+<div class="container">
+  <div class="content" onmouseover="moveImage()">
+    <div class="image" id="image">
+      <img src="your_image.jpg" alt="Image">
+      <div class="background-text" id="backgroundText">
+        <p>Background text</p>
+      </div>
+    </div>
+    <div class="text" id="text">
+      <p>Main text here</p>
+    </div>
+  </div>
+</div>
+
+
+.container {
+  position: relative;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+}
+
+.image {
+  position: relative;
+}
+
+.background-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  text-align: center;
+  display: none;
+}
+
+.text {
+  flex: 1;
+}
+
+.container:hover .image {
+  order: 2;
+}
+
+.container:hover .text {
+  order: 1;
+}
+
+.container:hover .background-text {
+  display: block;
+}
+
+
+
+function moveImage() {
+  const image = document.getElementById('image');
+  const text = document.getElementById('text');
+  const backgroundText = document.getElementById('backgroundText');
+
+  // Swap positions of image and text
+  image.style.order = '1';
+  text.style.order = '2';
+  backgroundText.style.display = 'block';
+}
