@@ -280,3 +280,75 @@ function moveImage() {
   text.style.order = '2';
   backgroundText.style.display = 'block';
 }
+
+
+
+function moveImage() {
+  const image = document.getElementById('image');
+  const text = document.getElementById('text');
+  const backgroundText = document.getElementById('backgroundText');
+
+  // Swap positions of image and text
+  const temp = image.innerHTML;
+  image.innerHTML = text.innerHTML;
+  text.innerHTML = temp;
+
+  // Toggle background text visibility
+  backgroundText.style.display = backgroundText.style.display === 'none' ? 'block' : 'none';
+}
+
+
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.image {
+  position: relative;
+  transition: order 0.5s ease;
+}
+
+.text {
+  transition: order 0.5s ease;
+}
+
+.background-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  text-align: center;
+  display: none;
+  transition: opacity 0.5s ease;
+  opacity: 0;
+}
+
+.container:hover #image {
+  order: 2;
+}
+
+.container:hover #text {
+  order: 1;
+}
+
+.container:hover .background-text {
+  display: block;
+  opacity: 1;
+}
+
+
+
+<div class="container" onmouseover="moveImage()">
+  <div class="image" id="image">
+    <img src="your_image.jpg" alt="Image">
+    <div class="background-text" id="backgroundText">
+      <p>Background text</p>
+    </div>
+  </div>
+  <div class="text" id="text">
+    <p>Main text here</p>
+  </div>
+</div>
