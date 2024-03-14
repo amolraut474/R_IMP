@@ -42,3 +42,55 @@ document.getElementById('image').addEventListener('mouseover', function() {
 document.getElementById('text').addEventListener('mouseover', function() {
   document.getElementById('image').style.display = 'block';
 });
+
+
+
+<div class="container">
+  <div class="content" id="content">
+    <div class="image">
+      <img src="your_image.jpg" alt="Image">
+    </div>
+    <div class="text">
+      <p>Your text here</p>
+    </div>
+  </div>
+</div>
+
+
+
+.container {
+  position: relative;
+  overflow: hidden;
+}
+
+.content {
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+.image,
+.text {
+  flex: 1;
+}
+
+.image img {
+  width: 100%; /* Adjust size as needed */
+}
+
+.text p {
+  margin: 0;
+}
+
+.container:hover #content {
+  transform: translateX(-100%);
+}
+
+
+
+document.querySelector('.container').addEventListener('mouseover', function() {
+  document.getElementById('content').style.transform = 'translateX(-100%)';
+});
+
+document.querySelector('.container').addEventListener('mouseout', function() {
+  document.getElementById('content').style.transform = 'translateX(0)';
+});
