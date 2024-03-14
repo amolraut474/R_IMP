@@ -142,3 +142,72 @@ function moveItems() {
   image.innerHTML = text.innerHTML;
   text.innerHTML = temp;
 }
+
+
+
+<div class="container">
+  <div class="image" id="image" onmouseover="moveImage()">
+    <img src="your_image.jpg" alt="Image">
+  </div>
+  <div class="text" id="text">
+    <p>Your main text here</p>
+  </div>
+  <div class="secondary-text" id="secondaryText">
+    <p>Another text to show when image is hovered</p>
+  </div>
+</div>
+
+
+
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.image {
+  flex: 1;
+  transition: transform 0.5s ease;
+}
+
+.text,
+.secondary-text {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  text-align: center;
+}
+
+.text p,
+.secondary-text p {
+  margin: 0;
+}
+
+.container:hover #image {
+  transform: translateX(-100%);
+}
+
+.container:hover #text {
+  display: none;
+}
+
+.container:hover #secondaryText {
+  display: block;
+}
+
+
+
+function moveImage() {
+  const image = document.getElementById('image');
+  const text = document.getElementById('text');
+  const secondaryText = document.getElementById('secondaryText');
+
+  // Swap positions of image and text
+  image.style.transform = 'translateX(-100%)';
+  text.style.display = 'none';
+  secondaryText.style.display = 'block';
+}
