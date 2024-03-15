@@ -77,3 +77,92 @@ function moveImage() {
 </body>
 
 </html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      display: flex;
+    }
+
+    .content {
+      display: flex;
+    }
+
+    .text {
+      flex: 1;
+    }
+
+    .image {
+      position: relative;
+      transition: transform 0.5s ease;
+    }
+
+    .background-text {
+      display: block;
+    }
+
+    .additional-background-text {
+      display: block;
+    }
+
+    .container:hover .image {
+      transform: translateX(100%);
+    }
+
+    div#additionalBackgroundText, div#backgroundText {
+      display: block;
+      position: absolute;
+      z-index: -1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container" onmouseover="moveImage()">
+    <div class="content">
+      <div class="text" id="mainText">
+        <p>Main text here</p>
+      </div>
+      <div class="image" id="image">
+        <img src="./banner_01_v2.webp" alt="Image">
+      </div>
+    </div>
+    <div class="additional-background-text" id="additionalBackgroundText">
+      <p>Additional background text here</p>
+    </div>
+    <div class="background-text" id="backgroundText">
+      <p>Background text here</p>
+    </div>
+  </div>
+  <script>
+    function moveImage() {
+      const image = document.getElementById('image');
+      const backgroundText = document.getElementById('backgroundText');
+      const additionalBackgroundText = document.getElementById('additionalBackgroundText');
+
+      const imageRect = image.getBoundingClientRect();
+      const backgroundTextRect = backgroundText.getBoundingClientRect();
+      const additionalBackgroundTextRect = additionalBackgroundText.getBoundingClientRect();
+
+      // Check if image overlaps with background text
+      if (imageRect.right >= backgroundTextRect.left) {
+        backgroundText.style.display = 'none'; // Hide the background text
+      }
+
+      // Check if image overlaps with additional background text
+      if (imageRect.right >= additionalBackgroundTextRect.left) {
+        additionalBackgroundText.style.display = 'none'; // Hide the additional background text
+      }
+    }
+  </script>
+</body>
+
+</html>
