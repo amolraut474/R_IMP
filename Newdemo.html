@@ -204,4 +204,66 @@ const App = () => {
 };
 
 export default App;
+
+
+
+          import React from 'react';
+import 'react-circular-progressbar/dist/styles.css';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import './Portfolio.css'; // Import CSS file for styling
+
+const skillsData = [
+  { skill: 'HTML', level: 90 },
+  { skill: 'CSS', level: 85 },
+  { skill: 'JavaScript', level: 80 },
+  // Add more skills as needed
+];
+
+const Portfolio = () => {
+  return (
+    <div className="portfolio-container">
+      <h1>My Skills</h1>
+      <div className="skills-container">
+        {skillsData.map((skill, index) => (
+          <div key={index} className="skill-item">
+            <h2>{skill.skill}</h2>
+            <div className="progressbar-wrapper">
+              <CircularProgressbar
+                value={skill.level}
+                text={`${skill.level}%`}
+                styles={buildStyles({
+                  textColor: '#fff',
+                  pathColor: '#007bff',
+                  trailColor: '#d6d6d6',
+                })}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Portfolio;
+.portfolio-container {
+  padding: 20px;
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.skill-item {
+  margin: 20px;
+  text-align: center;
+}
+
+.progressbar-wrapper {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
           
