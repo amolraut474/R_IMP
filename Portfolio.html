@@ -214,3 +214,88 @@ export default App;
 .single-blog-post p {
   margin-bottom: 10px;
 }
+
+
+const blogData = [
+  {
+    id: 1,
+    title: 'Blog Post 1',
+    date: 'March 1, 2024',
+    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+  },
+  {
+    id: 2,
+    title: 'Blog Post 2',
+    date: 'March 5, 2024',
+    content: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+  },
+  // Add more blog posts as needed
+];
+
+export default blogData;
+
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import blogData from './BlogData';
+
+const BlogList = () => {
+  return (
+    <div>
+      <h2>Blog</h2>
+      <ul>
+        {blogData.map(post => (
+          <li key={post.id}>
+            <Link to={`/blog/${post.id}`}>{post.title}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default BlogList;
+
+
+
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import blogData from './BlogData';
+
+const SingleBlog = () => {
+  const { id } = useParams();
+  const post = blogData.find(post => post.id === parseInt(id));
+
+  return (
+    <div>
+      <h2>{post.title}</h2>
+      <p>{post.date}</p>
+      <p>{post.content}</p>
+    </div>
+  );
+};
+
+export default SingleBlog;
+
+
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import BlogList from './BlogList';
+import SingleBlog from './SingleBlog';
+
+const App = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/blog">
+          <BlogList />
+        </Route>
+        <Route path="/blog/:id">
+          <SingleBlog />
+        </Route>
+      </Switch>
+    </Router>
+  );
+};
+
+export default App;
