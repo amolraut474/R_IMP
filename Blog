@@ -1,187 +1,78 @@
-// App.js
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import BlogPage from './components/BlogPage';
-import BlogPost from './components/BlogPost';
-
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<BlogPage />} />
-        <Route path="/blog/:id" element={<BlogPost />} />
-      </Routes>
-    </Router>
-  );
-}
-
-export default App;
-
-
-// BlogPage.js
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-
-const BlogPage = () => {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    // Simulated data fetching (replace with actual API call)
-    const fetchData = async () => {
-      const data = [
-        { id: 1, title: 'First Blog Post', content: 'This is the content of the first blog post.' },
-        { id: 2, title: 'Second Blog Post', content: 'This is the content of the second blog post.' },
-        // Add more blog posts as needed
-      ];
-      setPosts(data);
-    };
-
-    fetchData();
-  }, []);
-
-  return (
-    <div>
-      <h1>Blog</h1>
-      {posts.map(post => (
-        <div key={post.id}>
-          <h2><Link to={`/blog/${post.id}`}>{post.title}</Link></h2>
-          <p>{post.content}</p>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export default BlogPage;
-
-// BlogPost.js
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-
-const BlogPost = () => {
-  const { id } = useParams();
-  const [post, setPost] = useState(null);
-
-  useEffect(() => {
-    // Simulated data fetching (replace with actual API call)
-    const fetchData = async () => {
-      const data = [
-        { id: 1, title: 'First Blog Post', content: 'This is the content of the first blog post.' },
-        { id: 2, title: 'Second Blog Post', content: 'This is the content of the second blog post.' },
-        // Add more blog posts as needed
-      ];
-      const selectedPost = data.find(post => post.id === parseInt(id));
-      setPost(selectedPost);
-    };
-
-    fetchData();
-  }, [id]);
-
-  if (!post) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <div>
-      <h1>{post.title}</h1>
-      <p>{post.content}</p>
-    </div>
-  );
-};
-
-export default BlogPost;
-// BlogPost.js
-import React from 'react';
-import { useParams } from 'react-router-dom';
-
-const blogPosts = [
-  { id: 1, title: 'First Blog Post', content: 'This is the content of the first blog post.' },
-  { id: 2, title: 'Second Blog Post', content: 'This is the content of the second blog post.' },
+// blogData.js
+const blogData = [
+  {
+    id: 1,
+    title: 'Blog Post 1',
+    content: 'Content of Blog Post 1...',
+  },
+  {
+    id: 2,
+    title: 'Blog Post 2',
+    content: 'Content of Blog Post 2...',
+  },
+  // Add more blog posts as needed
 ];
 
-const BlogPost = () => {
-  const { id } = useParams();
-  const post = blogPosts.find(post => post.id === parseInt(id));
-
-  if (!post) {
-    return <div>Post not found</div>;
-  }
-
-  return (
-    <div>
-      <h1>{post.title}</h1>
-      <p>{post.content}</p>
-    </div>
-  );
-};
-
-export default BlogPost;
-// BlogPost.js
-import React from 'react';
-import { useParams } from 'react-router-dom';
-
-const blogPosts = [
-  { id: 1, title: 'First Blog Post', content: 'This is the content of the first blog post.' },
-  { id: 2, title: 'Second Blog Post', content: 'This is the content of the second blog post.' },
-];
-
-const BlogPost = () => {
-  const { id } = useParams();
-  const post = blogPosts.find(post => post.id === parseInt(id));
-
-  if (!post) {
-    return <div>Post not found</div>;
-  }
-
-  return (
-    <div>
-      <h1>{post.title}</h1>
-      <p>{post.content}</p>
-    </div>
-  );
-};
-
-export default BlogPost;
-// BlogPage.js
+export default blogData;
+// BlogList.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import blogData from './blogData';
 
-const blogPosts = [
-  { id: 1, title: 'First Blog Post', content: 'This is the content of the first blog post.' },
-  { id: 2, title: 'Second Blog Post', content: 'This is the content of the second blog post.' },
-];
-
-const BlogPage = () => {
+const BlogList = () => {
   return (
     <div>
-      <h1>Blog</h1>
-      {blogPosts.map(post => (
-        <div key={post.id}>
-          <h2><Link to={`/blog/${post.id}`}>{post.title}</Link></h2>
-          <p>{post.content}</p>
-        </div>
-      ))}
+      <h2>Blog List</h2>
+      <ul>
+        {blogData.map(post => (
+          <li key={post.id}>
+            <Link to={`/blog/${post.id}`}>{post.title}</Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
 
-export default BlogPage;
+export default BlogList;
+
+
+// SingleBlogPost.js
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import blogData from './blogData';
+
+const SingleBlogPost = () => {
+  const { id } = useParams();
+  const post = blogData.find(post => post.id === parseInt(id));
+
+  return (
+    <div>
+      <h2>{post.title}</h2>
+      <p>{post.content}</p>
+    </div>
+  );
+};
+
+export default SingleBlogPost;
+
+
 
 // App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import BlogPage from './components/BlogPage';
-import BlogPost from './components/BlogPost';
+import BlogList from './BlogList';
+import SingleBlogPost from './SingleBlogPost';
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<BlogPage />} />
-        <Route path="/blog/:id" element={<BlogPost />} />
+        <Route path="/blog" element={<BlogList />} />
+        <Route path="/blog/:id" element={<SingleBlogPost />} />
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;
