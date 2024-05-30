@@ -78,3 +78,156 @@ function hoverout() {
 </body>
 
 </html>
+
+
+<div class="page-width">
+
+<div class="image-text-img" >
+
+
+
+        <div class="box-1-group">
+            {% for block in section.blocks %}
+          {% if block.type == 'block-1' %}
+            <div class="box-1 ">
+              
+               
+                <div class="box-1-content">
+                 
+                    <h3 class="heading-text">{{ block.settings.heading-1 }}</h3>
+                  
+                    <p class="para-text">{{ block.settings.para-1 }}</p>
+                </div>
+              <div><img src="{{ block.settings.image-1 | img_url: 'small' }}"  /></div>
+
+            </div>
+{% endif%}
+       {% endfor %}
+        </div>
+  
+
+        <div class="box-2">
+     <img src="{{ section.settings.image | img_url: '2048x' }}" />
+    </div>
+       <div class="box-3-group">
+         {% for block in section.blocks %}
+         {% if block.type == 'block-2' %}
+    <div class="box-3">
+      
+      
+      <div><img src="{{ block.settings.image-2 | img_url: 'small' }}" /></div>
+      <div class="box-3-content">
+      <h3 class="heading-text">{{ block.settings.heading-2 }}</h3>
+      <p class="para-text">{{ block.settings.para-2 }}</p>
+      </div>
+    </div>
+      {% endif %}
+     {% endfor %}
+  </div>
+    </div>
+</div>
+
+{% schema %}
+  {
+     "name": "repeter-image-with-text",
+    "settings": [
+  {
+    "type": "image_picker",
+    "id": "image",
+   "label": "image"
+    }
+],
+ "blocks":[
+      {
+        "type": "block-1",
+        "name": "Block 1",
+        "settings": [
+            {
+    "type": "text",
+    "id": "heading-1",
+    "label": "Heading"
+    },
+ {
+    "type": "text",
+    "id": "para-1",
+    "label": "para"
+    },
+ {
+    "type": "image_picker",
+    "id": "image-1",
+   "label": "image"
+    }
+        ]
+      },
+      {
+        "type": "block-2",
+        "name": "Block 2",
+        "settings": [
+         {
+    "type": "text",
+    "id": "heading-2",
+    "label": "Heading"
+    },
+ {
+    "type": "text",
+    "id": "para-2",
+    "label": "para"
+    },
+ {
+    "type": "image_picker",
+    "id": "image-2",
+   "label": "image"
+    }
+        ]
+      }
+    ],
+   "presets":[
+    {
+   "name": "repeter-image-with-text"
+    }
+    ]
+  }
+{% endschema %}
+{% stylesheet %}
+.image-text-img{
+display:flex;
+align-items: center;
+justify-content: center;
+}
+.box-1 {
+    display: flex;
+    background-color: #fff;
+    color: #45505B;
+    margin: 15px;
+    border-radius: 10px;
+    padding: 25px 5px;
+    text-align: end;
+    flex-direction: column-reverse;
+}
+.box-3 {
+    display: flex;
+ background-color: #fff;
+    color: #45505B;
+    margin: 15px;
+    border-radius: 10px;
+    padding: 25px 5px;
+  flex-direction: column;
+}
+
+.heading-text {
+   color: #893d33;
+}
+.para-text {
+   color: gray;
+}
+.page-width {
+    padding: 61px 0px !important;
+}
+{% endstylesheet %}
+{% javascript %}
+{% endjavascript %}
+
+
+
+
+
