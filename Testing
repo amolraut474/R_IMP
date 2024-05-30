@@ -231,3 +231,68 @@ justify-content: center;
 
 
 
+
+<div class="image-links-section">
+  {% for block in section.blocks %}
+    {% if block.type == 'image_link' %}
+      <div class="image-link">
+        <a href="{{ block.settings.link }}">
+          <img src="{{ block.settings.image | img_url: '500x500' }}" alt="{{ block.settings.alt_text }}">
+        </a>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+{% schema %}
+{
+  "name": "Image Links Section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "image_link",
+      "name": "Image with Link",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Links",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.image-links-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.image-link {
+  flex: 1 1 30%;
+  max-width: 30%;
+}
+.image-link img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+</style>
+
+
